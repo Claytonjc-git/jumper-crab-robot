@@ -204,8 +204,8 @@ def _cover(spec, torso, level, nt=120, ns=48):
             lo, hi = (lo, mid) if stops(mid) else (mid, hi)
         reach[j] = lo
     # Smooth out notches without ever reaching past where the shell allows: a min, then a mean.
-    reach = np.min([np.roll(reach, k) for k in range(-2, 3)], axis=0)
-    reach = np.mean([np.roll(reach, k) for k in range(-2, 3)], axis=0)
+    reach = np.min([np.roll(reach, k) for k in range(-4, 5)], axis=0)
+    reach = np.mean([np.roll(reach, k) for k in range(-4, 5)], axis=0)
 
     def surface(xy, s):
         p, n = _top(xy)
@@ -254,8 +254,13 @@ def _tube(spec, body, name, path, radii, colour, sides=8, prefix="globe"):
     p, r = np.asarray(path, float), np.asarray(radii, float)
     t = np.gradient(p, axis=0)
     t /= np.linalg.norm(t, axis=1, keepdims=True)
-    a = np.cross(t, np.eye(3)[np.argmin(np.abs(t.mean(axis=0)))])
-    a /= np.linalg.norm(a, axis=1, keepdims=True)
+    # Carry the cross-section frame along the path, so the tube never twists or folds.
+    a = np.zeros_like(t)
+    a[0] = np.cross(t[0], np.eye(3)[np.argmin(np.abs(t[0]))])
+    for k in range(len(t)):
+        if k:
+            a[k] = a[k - 1] - (a[k - 1] @ t[k]) * t[k]
+        a[k] /= np.linalg.norm(a[k])
     b = np.cross(t, a)
     ang = 2 * np.pi * np.arange(sides) / sides
     verts, rows = [], []
@@ -313,7 +318,8 @@ def _icicles(spec, torso, edge, th, rng):
     for n, run in enumerate(r for r in runs if len(r) > 2):
         out = np.column_stack([np.cos(th[run]), np.sin(th[run]), np.zeros(len(run))])
         ledge = edge[run] + 0.0006 * out - [0.0, 0.0, 0.0007]
-        radii = ICE_LEDGE * (1 + 0.3 * np.sin(np.arange(len(run)) * 1.7 + n))
+        ledge = np.array([ledge[max(0, k - 2):k + 3].mean(axis=0) for k in range(len(ledge))])
+        radii = ICE_LEDGE * (1 + 0.12 * np.sin(np.arange(len(run)) * 0.9 + n))
         radii[0] = radii[-1] = 0.0
         _tube(spec, torso, f"ledge{n}", ledge, radii, "globe_icicle")
 
@@ -330,14 +336,14 @@ def _icicles(spec, torso, edge, th, rng):
 
 
 def _icicle(spec, torso, name, root, bearing, centre, rng):
-    """One tapered, slightly knobbly icicle from `root` down the shell's side."""
+    """One icicle from `root` down the shell's side, thick at the root and tapering to a point."""
     length = 0.004 + 0.010 * rng.beta(1.3, 2.5)
     if rng.random() < 0.15:
         length = rng.uniform(0.014, 0.024)
     r0 = 0.0006 + 0.05 * length + rng.uniform(0.0, 0.0004)
     u = np.array([np.cos(bearing), np.sin(bearing), 0.0])
-    s = np.linspace(0.0, 1.0, 10)
-    radii = r0 * (1 - s) ** 0.85 * (1 + 0.15 * np.sin(5 * np.pi * s + rng.uniform(0, 6)))
+    s = np.linspace(0.0, 1.0, 14)
+    radii = r0 * (1 - s) ** 1.2
     path, last = [], root
     for sk, rk in zip(s, radii):
         z = root[2] - sk * length
@@ -350,7 +356,7 @@ def _icicle(spec, torso, name, root, bearing, centre, rng):
                 p[:2] = q[:2]
         path.append(p)
         last = p
-    _tube(spec, torso, name, path, radii, "globe_icicle", sides=7)
+    _tube(spec, torso, name, path, radii, "globe_icicle", sides=10)
 
 
 
