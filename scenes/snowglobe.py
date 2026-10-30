@@ -29,10 +29,10 @@ from .registry import Scene, load
 
 BASE_ENV = "MJRL_SNOWGLOBE_BASE"
 
-R = 0.076                    # globe radius
+R = 0.090                    # globe radius: wider than the shell's top, overhanging it
 RIN = 0.985 * R              # props stay inside this
-CENTRE_XY = (-0.015, 0.0)    # the shell's top reaches 75 mm or more every way from here
-GLOBE_RISE = 0.45            # centre above the shell, in R: the shell hides the rest
+CENTRE_XY = (-0.020, 0.0)    # the glass's widest point just reaches the display's top edge
+GLOBE_RISE = 0.38            # centre above the shell, in R: the shell hides the rest
 CONTACT = R * np.sqrt(1 - GLOBE_RISE**2)   # where the glass meets the shell
 
 # Snow on the shell: depth, how high it banks against the glass and how far out that
@@ -59,7 +59,7 @@ ICY = {
     "base_link_visual": (0.06, 0.10, 0.18, 1.0),
 }
 
-SPECKS, FLAKES, SEED = 600, 110, 11
+SPECKS, FLAKES, SEED = 850, 150, 11
 
 # Layout in units of R from the globe's centre; +x is the robot's front.
 MOUNTAINS = ((-0.52, -0.28, 0.34, 0.62), (-0.48, 0.30, 0.32, 0.52), (-0.68, 0.0, 0.24, 0.42))
@@ -113,7 +113,7 @@ def dress(spec) -> None:
     # The shell's mean level under the glass's contact ring; the snow fills where it is lower.
     th = np.linspace(0, 2 * np.pi, 24, endpoint=False)
     ring = np.column_stack([np.cos(th), np.sin(th)]) * CONTACT + CENTRE_XY
-    under = [_top(p)[0][2] for p in ring]
+    under = [hit[0][2] for hit in map(_top, ring) if hit is not None]  # past the edge: none
     level = np.mean(under)
     c = np.array([*CENTRE_XY, level + GLOBE_RISE * R])
     edge, th = _cover(spec, torso, level)
@@ -146,7 +146,7 @@ def _materials(spec):
 
 
 
-def _mesh(spec, body, name, verts, faces, outward, colour):
+def _mesh(spec, body, name, verts, faces, outward, colour, prefix="globe"):
     """A mesh from explicit faces, each wound to face along `outward`."""
     import mujoco
 
@@ -154,19 +154,21 @@ def _mesh(spec, body, name, verts, faces, outward, colour):
     n = np.cross(v[f[:, 1]] - v[f[:, 0]], v[f[:, 2]] - v[f[:, 0]])
     flip = np.sum(n * np.asarray(outward, float), axis=1) < 0
     f[flip] = f[flip][:, ::-1]
-    mesh = spec.add_mesh(name=f"globe_{name}")
+    mesh = spec.add_mesh(name=f"{prefix}_{name}")
     mesh.uservert = v.flatten().tolist()
     mesh.userface = f.flatten().tolist()
-    return add(body, name, mujoco.mjtGeom.mjGEOM_MESH, (), colour, mesh=f"globe_{name}")
+    return _add(body, name, mujoco.mjtGeom.mjGEOM_MESH, (), colour, mesh=f"{prefix}_{name}",
+                prefix=prefix)
 
 
-def _hull(spec, body, name, verts, colour):
+def _hull(spec, body, name, verts, colour, prefix="globe"):
     """A convex solid through `verts`; MuJoCo builds the hull of a faceless mesh."""
     import mujoco
 
-    mesh = spec.add_mesh(name=f"globe_{name}")
+    mesh = spec.add_mesh(name=f"{prefix}_{name}")
     mesh.uservert = np.asarray(verts, float).flatten().tolist()
-    return add(body, name, mujoco.mjtGeom.mjGEOM_MESH, (), colour, mesh=f"globe_{name}")
+    return _add(body, name, mujoco.mjtGeom.mjGEOM_MESH, (), colour, mesh=f"{prefix}_{name}",
+                prefix=prefix)
 
 
 
@@ -209,7 +211,7 @@ def _cover(spec, torso, level, nt=120, ns=48):
         p, n = _top(xy)
         depth = COVER_DEPTH * (0.35 + 0.65 * min(1.0, (1 - s) / 0.15) ** 0.5)
         gap = np.linalg.norm(xy - CENTRE_XY) - CONTACT
-        ramp = np.clip(1 - gap / DRIFT_REACH, 0.0, 1.0)
+        ramp = np.clip(1 - abs(gap) / DRIFT_REACH, 0.0, 1.0)  # a ring, under the inner snow
         drift = max(0.0, level + SNOW_BANK - p[2] - depth) * ramp * ramp * (3 - 2 * ramp)
         return p - 0.0008 * n, p + depth * n + [0.0, 0.0, drift]
 
@@ -247,7 +249,7 @@ def _cover(spec, torso, level, nt=120, ns=48):
     return verts[half - nt:half], th
 
 
-def _tube(spec, body, name, path, radii, colour, sides=8):
+def _tube(spec, body, name, path, radii, colour, sides=8, prefix="globe"):
     """A tube through `path`, `radii` across; a radius of 0 closes that end in a point."""
     p, r = np.asarray(path, float), np.asarray(radii, float)
     t = np.gradient(p, axis=0)
@@ -285,7 +287,7 @@ def _tube(spec, body, name, path, radii, colour, sides=8):
             for j in range(sides):
                 faces.append((centre, rows[end][j], rows[end][(j + 1) % sides]))
                 outward.append(sign * t[end])
-    return _mesh(spec, body, name, verts, faces, outward, colour)
+    return _mesh(spec, body, name, verts, faces, outward, colour, prefix)
 
 
 def _icicles(spec, torso, edge, th, rng):
@@ -415,7 +417,7 @@ def _floor(spec, torso, c, nt=72, ns=20, nc=8):
     _mesh(spec, torso, "floor", verts + c, faces, outward, SNOW)
 
 
-def _cone(spec, body, name, apex, ring, base, colour):
+def _cone(spec, body, name, apex, ring, base, colour, prefix="globe"):
     """Faces from `apex` and from `base` to a closed `ring`: a cone with any outline."""
     apex, base, ring = np.asarray(apex, float), np.asarray(base, float), np.asarray(ring, float)
     axis = (apex - base) / np.linalg.norm(apex - base)
@@ -426,7 +428,7 @@ def _cone(spec, body, name, apex, ring, base, colour):
         rel = (apex + ring[i] + ring[j]) / 3 - base
         faces += [(0, 2 + i, 2 + j), (1, 2 + j, 2 + i)]
         outward += [rel - (rel @ axis) * axis, -axis]
-    return _mesh(spec, body, name, verts, faces, outward, colour)
+    return _mesh(spec, body, name, verts, faces, outward, colour, prefix)
 
 
 def _snowcap(spec, body, name, apex, ring, fractions, colour=SNOW, push=0.06):
@@ -678,7 +680,7 @@ def _specks(torso, c, rng):
     while placed < SPECKS:
         n = rng.normal(size=3)
         n /= np.linalg.norm(n)
-        if n[2] < -0.45:     # below here the shell's snow hides the glass
+        if n[2] < -0.6:      # below here the shell hides the glass
             continue
         add(torso, f"speck{placed}", mujoco.mjtGeom.mjGEOM_CYLINDER,
             (rng.uniform(0.0005, 0.0014), 0.00006), SNOW, pos=c + (R - 0.00012) * n,
