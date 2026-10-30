@@ -227,11 +227,12 @@ def _top(xy):
     return _hit([*xy, 0.3], [0.0, 0.0, -1.0])
 
 
-def _add(body, name, gtype, size, rgba, *, pos=None, mat=None, fromto=None, mesh=None):
+def _add(body, name, gtype, size, rgba, *, pos=None, mat=None, fromto=None, mesh=None,
+         prefix="ninja"):
     import mujoco
 
     g = body.add_geom()
-    g.name = f"ninja_{name}"
+    g.name = f"{prefix}_{name}"
     g.type = gtype
     g.size = list(size) + [0.0] * (3 - len(size))
     _paint(g, rgba)
@@ -265,7 +266,8 @@ def _strip(body, name, p0, p1, normal, half_width, half_thick, rgba):
                 pos=(p0 + p1) / 2, mat=np.column_stack([t, n, np.cross(t, n)]))
 
 
-def _ribbon(spec, body, name, points, normals, half_width, half_thick, colour, closed=False):
+def _ribbon(spec, body, name, points, normals, half_width, half_thick, colour, closed=False,
+            prefix="ninja"):
     """A flat band through `points`, its face along `normals`, as one seamless mesh."""
     import mujoco
 
@@ -306,10 +308,11 @@ def _ribbon(spec, body, name, points, normals, half_width, half_thick, colour, c
     flip = np.sum(facing * np.array(outward), axis=1) < 0
     f[flip] = f[flip][:, ::-1]
 
-    mesh = spec.add_mesh(name=f"ninja_{name}")
+    mesh = spec.add_mesh(name=f"{prefix}_{name}")
     mesh.uservert = v.flatten().tolist()
     mesh.userface = f.flatten().tolist()
-    return _add(body, name, mujoco.mjtGeom.mjGEOM_MESH, (), colour, mesh=f"ninja_{name}")
+    return _add(body, name, mujoco.mjtGeom.mjGEOM_MESH, (), colour, mesh=f"{prefix}_{name}",
+                prefix=prefix)
 
 
 def _smooth(a, k=2):
