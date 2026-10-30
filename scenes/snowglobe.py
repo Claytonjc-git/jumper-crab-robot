@@ -38,7 +38,7 @@ CONTACT = R * np.sqrt(1 - GLOBE_RISE**2)   # where the glass meets the shell
 # Snow on the shell: depth, how high it banks against the glass and how far out that
 # reaches, and where it stops. The bank stays below the snow inside the globe.
 COVER_DEPTH, SNOW_BANK, DRIFT_REACH = 0.003, 0.08 * R, 0.015
-DISPLAY_X = 0.062
+COVER_EDGE_Z, DISPLAY_X = 0.044, 0.062
 ICICLE_GAP = (0.0022, 0.0035)            # spacing range along the edge
 ICICLE_CLEAR = 0.0004                    # gap left between an icicle and the robot's side
 
@@ -176,14 +176,15 @@ def _hull(spec, body, name, verts, colour, prefix="globe"):
 def _cover(spec, torso, level, nt=120, ns=48):
     """Snow over the shell's top, thinning to a lip at its edge and banked against the glass.
 
-    The edge is the shell's outline seen from above -- its widest point, where icicles
-    form -- and stops short of the display. The snow is laid along the shell's normal, so
-    it keeps its depth on the steep sides. Returns the edge's top points and their
-    bearings from the shell's centre.
+    The edge runs down the shell's sides to COVER_EDGE_Z, wavering a little, or stops at
+    the outline where the side is too steep to hold it, and short of the display. The
+    snow is laid along the shell's normal, so it keeps its depth on the steep sides.
+    Returns the edge's top points and their bearings from the shell's centre.
     """
     m, d, geoms = _shell()
     centre = d.geom_xpos[geoms[0]][:2]
     th = 2 * np.pi * np.arange(nt) / nt
+    edge_z = COVER_EDGE_Z + 0.003 * np.sin(5 * th + 0.7) + 0.002 * np.sin(11 * th)
     reach = np.zeros(nt)
     for j, t in enumerate(th):
         u = np.array([np.cos(t), np.sin(t)])
@@ -193,7 +194,7 @@ def _cover(spec, torso, level, nt=120, ns=48):
             hit, inside = _top(xy), _top(xy - 0.001 * u)
             # Off the outline, or dropped down a hole onto something lower.
             return (hit is None or inside is None or inside[0][2] - hit[0][2] > 0.004
-                    or xy[0] > DISPLAY_X)
+                    or hit[0][2] < edge_z[j] or xy[0] > DISPLAY_X)
 
         for rho in np.arange(0.002, 0.15, 0.001):
             if stops(rho):
@@ -251,8 +252,11 @@ def _cover(spec, torso, level, nt=120, ns=48):
     return verts[half - nt:half], th
 
 
-def _tube(spec, body, name, path, radii, colour, sides=8, prefix="globe"):
-    """A tube through `path`, `radii` across; a radius of 0 closes that end in a point."""
+def _rings(path, radii, sides=8):
+    """The cross-section rings of a tube through `path`: the path, its tangents, the rings.
+
+    A ring of radius 0 is the path point alone.
+    """
     p, r = np.asarray(path, float), np.asarray(radii, float)
     t = np.gradient(p, axis=0)
     t /= np.linalg.norm(t, axis=1, keepdims=True)
@@ -265,10 +269,16 @@ def _tube(spec, body, name, path, radii, colour, sides=8, prefix="globe"):
         a[k] /= np.linalg.norm(a[k])
     b = np.cross(t, a)
     ang = 2 * np.pi * np.arange(sides) / sides
+    return p, t, [[p[k]] if r[k] == 0 else p[k] + r[k] * (np.outer(np.cos(ang), a[k])
+                                                          + np.outer(np.sin(ang), b[k]))
+                  for k in range(len(p))]
+
+
+def _tube(spec, body, name, path, radii, colour, sides=8, prefix="globe"):
+    """A tube through `path`, `radii` across; a radius of 0 closes that end in a point."""
+    p, t, rings = _rings(path, radii, sides)
     verts, rows = [], []
-    for k in range(len(p)):
-        ring = [p[k]] if r[k] == 0 else p[k] + r[k] * (np.outer(np.cos(ang), a[k])
-                                                       + np.outer(np.sin(ang), b[k]))
+    for ring in rings:
         rows.append(list(range(len(verts), len(verts) + len(ring))))
         verts.extend(ring)
     faces, outward = [], []
@@ -313,7 +323,7 @@ def _side(pnt, vec):
 
 
 def _icicles(spec, torso, edge, th, rng):
-    """Icicles hanging from the snow's edge, where the shell's top turns down its side.
+    """Icicles hanging from the snow's edge down the shell's sides.
 
     None hangs over the display.
     """
@@ -344,11 +354,30 @@ def _icicles(spec, torso, edge, th, rng):
             at += rng.uniform(*ICICLE_GAP)
 
 
-def _icicle(spec, torso, name, root, bearing, centre, rng):
-    """One icicle hanging straight down from `root`, thick at the root, tapering to a point.
+def _in_robot(points, centre):
+    """Whether any of `points` is inside the shell, display or lower body.
 
-    It stands off the robot's side by its radius and ICICLE_CLEAR, and is shortened where
-    the side leans out under it; one that would be under 3 mm is left out.
+    A point inside a closed mesh meets its wall on the way out; one outside meets nothing.
+    """
+    import mujoco
+
+    m, d, geoms = _shell()
+    walls = (*geoms, m.geom("base_link_visual").id)
+    for q in points:
+        out = np.array([*(q[:2] - centre), 0.0])
+        out /= np.linalg.norm(out)
+        if any(0 <= mujoco.mj_rayMesh(m, d, g, q, out, np.zeros(3)) < 0.05 for g in walls):
+            return True
+    return False
+
+
+def _icicle(spec, torso, name, root, bearing, centre, rng):
+    """One icicle from `root` down the robot's side, thick at the root, tapering to a point.
+
+    It follows the side where the side leans out under it and hangs straight where it
+    tucks in, standing off the surface by its radius and ICICLE_CLEAR along the surface's
+    normal, so a tilted cross-section stays clear too. One that still reaches inside is
+    shortened, and one that would be under 3 mm is left out.
     """
     length = 0.004 + 0.010 * rng.beta(1.3, 2.5)
     if rng.random() < 0.15:
@@ -358,20 +387,23 @@ def _icicle(spec, torso, name, root, bearing, centre, rng):
     s = np.linspace(0.0, 1.0, 14)
     radii = r0 * (1 - s) ** 1.2
 
-    def wall(z):
-        hit = _side([*centre, z] + 0.3 * u, -u)
-        return 0.0 if hit is None else np.linalg.norm(hit[0][:2] - centre)
-
-    rho = max(np.linalg.norm(root[:2] - centre), wall(root[2]) + r0 + ICICLE_CLEAR)
     while length >= 0.003:
-        z = root[2] - s * length
-        if all(rho >= wall(zk) + rk + ICICLE_CLEAR for zk, rk in zip(z, radii)):
+        path, last = [], root
+        for sk, rk in zip(s, radii):
+            p = np.array([last[0], last[1], root[2] - sk * length])
+            hit = _side([*centre, p[2]] + 0.3 * u, -u)
+            if hit is not None:
+                # Out along the bearing far enough to be rk + ICICLE_CLEAR off the surface.
+                q = hit[0] + (rk + ICICLE_CLEAR) / max(hit[1] @ u, 0.3) * u
+                if np.linalg.norm(q[:2] - centre) > np.linalg.norm(last[:2] - centre):
+                    p[:2] = q[:2]
+            path.append(p)
+            last = p
+        if not _in_robot(np.vstack(_rings(path, radii, 10)[2]), centre):
             break
         length *= 0.8
     else:
         return
-    path = np.column_stack([np.full(len(s), centre[0] + rho * u[0]),
-                            np.full(len(s), centre[1] + rho * u[1]), z])
     _tube(spec, torso, name, path, radii, "globe_icicle", sides=10)
 
 
