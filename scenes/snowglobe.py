@@ -1,9 +1,9 @@
 """A snow globe on the robot's back, over any other scene -- for video.
 
 Pick the world with `--snowglobe-base` (default `studio`). The robot keeps its
-own shell, which holds the electronics; the globe stands on top of it on a
-turned wooden base with a brass plaque, in snow that covers the shell and drifts
-up against the base. Inside is a snowy village under mountains: two houses with
+own shell, which holds the electronics; the globe swells out of the top of it,
+sunk to below its middle, in snow that covers the shell and banks up against the
+glass. Inside is a snowy village under mountains: two houses with
 lit windows, pine trees, a snowman and a street lamp. Flat flakes sit just
 inside the glass and a few hang in the air. The rest of the robot is ice blue,
 and an ice ledge runs along the snow's edge with icicles hanging down the shell.
@@ -31,17 +31,13 @@ BASE_ENV = "MJRL_SNOWGLOBE_BASE"
 
 R = 0.068                    # globe radius
 RIN = 0.985 * R              # props stay inside this
-CENTRE_XY = (-0.010, 0.0)    # the base's front edge stops short of the display
-# Turned base, (radius, height) in units of R from the foot up.
-PLINTH = ((0.0, 0.0), (0.98, 0.0), (1.03, 0.014), (1.05, 0.042), (1.03, 0.07), (0.99, 0.084),
-          (0.96, 0.091), (0.96, 0.21), (0.98, 0.217), (1.0, 0.238), (0.98, 0.259),
-          (0.93, 0.273), (0.86, 0.28), (0.83, 0.301), (0.81, 0.35), (0.81, 0.392),
-          (0.83, 0.42), (0.82, 0.434), (0.76, 0.441), (0.0, 0.441))
-PLAQUE_Z = 0.165                         # upper part of the base's plain band
-GLASS_Z = 0.441 + np.sqrt(1 - 0.76**2)   # the glass meets the base's top lip
+CENTRE_XY = (-0.010, 0.0)    # the glass stops short of the display
+GLOBE_RISE = 0.5             # centre above the shell, in R: the shell hides the rest
+CONTACT = R * np.sqrt(1 - GLOBE_RISE**2)   # where the glass meets the shell
 
-# Snow on the shell: depth, how far it drifts out from the base, and where it stops.
-COVER_DEPTH, DRIFT_REACH = 0.003, 0.02
+# Snow on the shell: depth, how high it banks against the glass and how far out that
+# reaches, and where it stops. The bank stays below the snow inside the globe.
+COVER_DEPTH, SNOW_BANK, DRIFT_REACH = 0.003, 0.12 * R, 0.02
 COVER_EDGE_Z, DISPLAY_X = 0.044, 0.062
 ICE_LEDGE = 0.0014                       # radius of the ice along the snow's edge
 ICICLE_GAP = (0.0022, 0.0035)            # spacing range along the edge
@@ -55,7 +51,6 @@ ROOF = (0.20, 0.11, 0.08, 1.0)
 TIMBER, BRICK = (0.50, 0.30, 0.16, 1.0), (0.55, 0.20, 0.14, 1.0)
 IRON = (0.08, 0.08, 0.09, 1.0)
 CARROT, COAL, SCARF = (0.95, 0.45, 0.08, 1.0), (0.04, 0.04, 0.05, 1.0), (0.78, 0.06, 0.07, 1.0)
-WOOD_LIGHT, WOOD_DARK = (110, 40, 17), (80, 27, 11)
 # The robot's own colours, recoloured; see `ninja.LOOKS` for the scheme.
 ICY = {
     RED_PART: (0.60, 0.80, 0.94, 1.0),
@@ -101,7 +96,7 @@ def scene(snowglobe_base: str = "studio") -> Scene:
 
 
 def dress(spec) -> None:
-    """Stand the globe on the shell and fill it. No-op on a world with no robot."""
+    """Sink the globe into the shell and fill it. No-op on a world with no robot."""
     import mujoco
 
     torso = next((b for b in spec.bodies if b.name.split("/")[-1] == "base_link"), None)
@@ -115,18 +110,15 @@ def dress(spec) -> None:
             if colour is not None:
                 _paint(geom, colour)
 
-    # The foot sits between the shell's mean and highest points under its rim: a little
-    # sunk at the front, clear of the plaque, and raised at the back, where snow drifts up.
+    # The shell's level under the glass: between its mean and highest points there, so
+    # the snow has little to fill at the back and the front stays clear.
     th = np.linspace(0, 2 * np.pi, 24, endpoint=False)
-    rim = np.column_stack([np.cos(th), np.sin(th)]) * 1.05 * R + CENTRE_XY
-    under = [_top(p)[0][2] for p in rim]
-    foot = (np.mean(under) + max(under)) / 2
-    c = np.array([*CENTRE_XY, foot + GLASS_Z * R])
-    edge, th = _cover(spec, torso, foot)
+    ring = np.column_stack([np.cos(th), np.sin(th)]) * CONTACT + CENTRE_XY
+    under = [_top(p)[0][2] for p in ring]
+    level = (np.mean(under) + max(under)) / 2
+    c = np.array([*CENTRE_XY, level + GLOBE_RISE * R])
+    edge, th = _cover(spec, torso, level)
     _icicles(spec, torso, edge, th, np.random.default_rng(SEED + 1))
-    _lathe(spec, torso, "plinth", [(r * R, z * R) for r, z in PLINTH],
-           np.array([*CENTRE_XY, foot]), "globe_wood")
-    _plaque(spec, torso, np.array([*CENTRE_XY, foot]))
     add(torso, "glass", mujoco.mjtGeom.mjGEOM_SPHERE, (R,), "globe_glass", pos=c)
 
     rng = np.random.default_rng(SEED)
@@ -144,7 +136,6 @@ def dress(spec) -> None:
 
 
 def _materials(spec):
-    import mujoco
 
     spec.add_material(name="globe_glass", rgba=GLASS, specular=1.0, shininess=1.0)
     spec.add_material(name="globe_window", rgba=(1.0, 0.78, 0.35, 1.0), emission=1.0)
@@ -153,30 +144,6 @@ def _materials(spec):
                       shininess=0.85)
     spec.add_material(name="globe_icicle", rgba=(0.82, 0.93, 1.0, 0.8), specular=1.0,
                       shininess=1.0)
-    # MuJoCo projects a cube texture onto a mesh with no texture coordinates.
-    faces = _grain()
-    tex = spec.add_texture(name="globe_wood", type=mujoco.mjtTexture.mjTEXTURE_CUBE)
-    tex.width, tex.height, tex.nchannel = faces.shape[1], faces.shape[0], 3
-    tex.data = faces.tobytes()
-    wood = spec.add_material(name="globe_wood", specular=0.6, shininess=0.75)
-    wood.textures[mujoco.mjtTextureRole.mjTEXROLE_RGB] = "globe_wood"
-
-
-@functools.lru_cache(maxsize=1)
-def _grain() -> np.ndarray:
-    """Six faces of varnished wood, grain running round the base."""
-    rng = np.random.default_rng(SEED)
-    y, x = np.mgrid[0:256, 0:256] / 256
-    light, dark = np.array(WOOD_LIGHT, float), np.array(WOOD_DARK, float)
-    faces = []
-    for _ in range(6):
-        a, b = rng.uniform(0, 2 * np.pi, 2)
-        wave = np.sin(2 * np.pi * (8 * y + 0.25 * np.sin(2 * np.pi * x + a)
-                                   + 0.06 * np.sin(2 * np.pi * 4 * x + b)))
-        t = ((wave + 1) / 2) ** 3 + 0.3 * (0.5 + 0.5 * np.sin(2 * np.pi * (3 * y + a)))
-        t = np.clip(t + rng.normal(0, 0.03, wave.shape), 0, 1)
-        faces.append((light + t[..., None] * (dark - light)).astype(np.uint8))
-    return np.ascontiguousarray(np.vstack(faces))
 
 
 
@@ -203,50 +170,10 @@ def _hull(spec, body, name, verts, colour):
     return add(body, name, mujoco.mjtGeom.mjGEOM_MESH, (), colour, mesh=f"globe_{name}")
 
 
-def _lathe(spec, body, name, profile, foot, colour, n=72):
-    """`profile` (radius, height) turned round the vertical through `foot`."""
-    th = 2 * np.pi * np.arange(n) / n
-    radial = np.column_stack([np.cos(th), np.sin(th), np.zeros(n)])
-    verts, rows = [], []
-    for r, z in profile:
-        pts = foot + r * radial[: 1 if r == 0 else n] + [0.0, 0.0, z]
-        rows.append(list(range(len(verts), len(verts) + len(pts))))
-        verts.extend(pts)
-    faces, outward = [], []
-    for k in range(len(profile) - 1):
-        (r0, z0), (r1, z1) = profile[k], profile[k + 1]
-        a, b = rows[k], rows[k + 1]
-        for j in range(n):
-            jj = (j + 1) % n
-            out = (z1 - z0) * radial[j] - (r1 - r0) * np.array([0.0, 0.0, 1.0])
-            if len(a) == 1:
-                tris = [(a[0], b[j], b[jj])]
-            elif len(b) == 1:
-                tris = [(a[j], a[jj], b[0])]
-            else:
-                tris = [(a[j], a[jj], b[j]), (b[j], a[jj], b[jj])]
-            faces += tris
-            outward += [out] * len(tris)
-    return _mesh(spec, body, name, verts, faces, outward, colour)
 
 
-def _plaque(spec, torso, foot):
-    """A curved brass plate on the base's front band, with a screw at each end."""
-    import mujoco
-
-    th = np.linspace(-0.38, 0.38, 24)
-    radial = np.column_stack([np.cos(th), np.sin(th), np.zeros_like(th)])
-    points = foot + (0.96 * R + 0.0005) * radial + [0.0, 0.0, PLAQUE_Z * R]
-    _ribbon(spec, torso, "plaque", points, radial, 0.035 * R, 0.0004, "globe_brass",
-            prefix="globe")
-    for side in (-1, 1):
-        u = np.array([np.cos(side * 0.33), np.sin(side * 0.33), 0.0])
-        add(torso, f"screw{side}", mujoco.mjtGeom.mjGEOM_SPHERE, (0.0006,), "globe_brass",
-            pos=foot + (0.96 * R + 0.0009) * u + [0.0, 0.0, PLAQUE_Z * R])
-
-
-def _cover(spec, torso, foot, nt=120, ns=48):
-    """Snow over the shell's top, thinning to a lip at its edge and drifting up to the foot.
+def _cover(spec, torso, level, nt=120, ns=48):
+    """Snow over the shell's top, thinning to a lip at its edge and banked against the glass.
 
     The edge stops at COVER_EDGE_Z, wavering a little, and short of the display. The snow
     is laid along the shell's normal, so it keeps its depth on the steep sides. Returns
@@ -282,9 +209,9 @@ def _cover(spec, torso, foot, nt=120, ns=48):
     def surface(xy, s):
         p, n = _top(xy)
         depth = COVER_DEPTH * (0.35 + 0.65 * min(1.0, (1 - s) / 0.15) ** 0.5)
-        gap = np.linalg.norm(xy - CENTRE_XY) - 1.05 * R
+        gap = np.linalg.norm(xy - CENTRE_XY) - CONTACT
         ramp = np.clip(1 - gap / DRIFT_REACH, 0.0, 1.0)
-        drift = max(0.0, foot + 0.001 - p[2] - depth) * ramp * ramp * (3 - 2 * ramp)
+        drift = max(0.0, level + SNOW_BANK - p[2] - depth) * ramp * ramp * (3 - 2 * ramp)
         return p - 0.0008 * n, p + depth * n + [0.0, 0.0, drift]
 
     top, bottom = [], []
@@ -752,7 +679,7 @@ def _specks(torso, c, rng):
     while placed < SPECKS:
         n = rng.normal(size=3)
         n /= np.linalg.norm(n)
-        if n[2] < -0.45:     # below here the base hides the glass
+        if n[2] < -0.45:     # below here the shell's snow hides the glass
             continue
         add(torso, f"speck{placed}", mujoco.mjtGeom.mjGEOM_CYLINDER,
             (rng.uniform(0.0005, 0.0014), 0.00006), SNOW, pos=c + (R - 0.00012) * n,
