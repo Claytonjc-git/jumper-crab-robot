@@ -38,7 +38,7 @@ CONTACT = R * np.sqrt(1 - GLOBE_RISE**2)   # where the glass meets the shell
 # Snow on the shell: depth, how high it banks against the glass and how far out that
 # reaches, and where it stops. The bank stays below the snow inside the globe.
 COVER_DEPTH, SNOW_BANK, DRIFT_REACH = 0.003, 0.08 * R, 0.015
-COVER_EDGE_Z, DISPLAY_X = 0.044, 0.062
+DISPLAY_X = 0.062
 ICICLE_GAP = (0.0022, 0.0035)            # spacing range along the edge
 ICICLE_CLEAR = 0.0004                    # gap left between an icicle and the robot's side
 
@@ -176,14 +176,14 @@ def _hull(spec, body, name, verts, colour, prefix="globe"):
 def _cover(spec, torso, level, nt=120, ns=48):
     """Snow over the shell's top, thinning to a lip at its edge and banked against the glass.
 
-    The edge stops at COVER_EDGE_Z, wavering a little, and short of the display. The snow
-    is laid along the shell's normal, so it keeps its depth on the steep sides. Returns
-    the edge's top points and their bearings from the shell's centre.
+    The edge is the shell's outline seen from above -- its widest point, where icicles
+    form -- and stops short of the display. The snow is laid along the shell's normal, so
+    it keeps its depth on the steep sides. Returns the edge's top points and their
+    bearings from the shell's centre.
     """
     m, d, geoms = _shell()
     centre = d.geom_xpos[geoms[0]][:2]
     th = 2 * np.pi * np.arange(nt) / nt
-    edge_z = COVER_EDGE_Z + 0.003 * np.sin(5 * th + 0.7) + 0.002 * np.sin(11 * th)
     reach = np.zeros(nt)
     for j, t in enumerate(th):
         u = np.array([np.cos(t), np.sin(t)])
@@ -191,9 +191,9 @@ def _cover(spec, torso, level, nt=120, ns=48):
         def stops(rho):
             xy = centre + rho * u
             hit, inside = _top(xy), _top(xy - 0.001 * u)
-            # Past the top's edge: where it turns steeper than 45 degrees down the side.
-            return (hit is None or inside is None or hit[0][2] < edge_z[j]
-                    or inside[0][2] - hit[0][2] > 0.001 or xy[0] > DISPLAY_X)
+            # Off the outline, or dropped down a hole onto something lower.
+            return (hit is None or inside is None or inside[0][2] - hit[0][2] > 0.004
+                    or xy[0] > DISPLAY_X)
 
         for rho in np.arange(0.002, 0.15, 0.001):
             if stops(rho):
@@ -362,7 +362,7 @@ def _icicle(spec, torso, name, root, bearing, centre, rng):
         hit = _side([*centre, z] + 0.3 * u, -u)
         return 0.0 if hit is None else np.linalg.norm(hit[0][:2] - centre)
 
-    rho = wall(root[2]) + r0 + ICICLE_CLEAR
+    rho = max(np.linalg.norm(root[:2] - centre), wall(root[2]) + r0 + ICICLE_CLEAR)
     while length >= 0.003:
         z = root[2] - s * length
         if all(rho >= wall(zk) + rk + ICICLE_CLEAR for zk, rk in zip(z, radii)):
