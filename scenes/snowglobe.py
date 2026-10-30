@@ -40,7 +40,8 @@ CONTACT = R * np.sqrt(1 - GLOBE_RISE**2)   # where the glass meets the shell
 COVER_DEPTH, SNOW_BANK, DRIFT_REACH = 0.003, 0.08 * R, 0.015
 COVER_EDGE_Z, DISPLAY_X = 0.044, 0.062
 ICICLE_GAP = (0.0022, 0.0035)            # spacing range along the edge
-ICICLE_CLEAR = 0.0004                    # gap left between an icicle and the robot's side
+ICICLE_CLEAR = 0.0004                    # gap left between the ice and the robot's side
+ICE_LEDGE = 0.0016                       # radius of the ice line the icicles hang from
 
 GLASS = (0.85, 0.93, 1.0, 0.13)
 SNOW = (0.95, 0.97, 1.0, 1.0)
@@ -324,7 +325,7 @@ def _side(pnt, vec):
 
 
 def _icicles(spec, torso, edge, th, rng):
-    """Icicles hanging from under the snow's edge down the shell's sides.
+    """An ice line under the snow's edge, with icicles hanging from it down the shell's sides.
 
     None hangs over the display.
     """
@@ -342,8 +343,14 @@ def _icicles(spec, torso, edge, th, rng):
         runs.append(run)
 
     placed = 0
-    for run in (r for r in runs if len(r) > 2):
-        lip = edge[run] - [0.0, 0.0, 0.0005]     # just under the snow's lip
+    for n, run in enumerate(r for r in runs if len(r) > 2):
+        ledge = _ledge(edge[run], th[run], centre)
+        radii = ICE_LEDGE * (1 + 0.12 * np.sin(np.arange(len(run)) * 0.9 + n))
+        radii[0] = radii[-1] = 0.0
+        ledge = _clear(ledge, radii, th[run], centre)
+        _tube(spec, torso, f"ledge{n}", ledge, radii, "globe_icicle", sides=10)
+
+        lip = ledge.copy()     # the icicles start inside the line, which hides their tops
         bearing = np.unwrap(th[run])
         along = np.concatenate([[0.0], np.cumsum(np.linalg.norm(np.diff(lip, axis=0), axis=1))])
         at = rng.uniform(*ICICLE_GAP) / 2
@@ -353,6 +360,30 @@ def _icicles(spec, torso, edge, th, rng):
             _icicle(spec, torso, f"icicle{placed}", root, bear, centre, rng)
             placed += 1
             at += rng.uniform(*ICICLE_GAP)
+
+
+def _ledge(edge, th, centre):
+    """The ice line's path: just under `edge`, ICE_LEDGE + ICICLE_CLEAR off the robot's side."""
+    path = []
+    for q, t in zip(edge, th):
+        u = np.array([np.cos(t), np.sin(t), 0.0])
+        z = q[2] - 0.2 * ICE_LEDGE
+        hit = _side([*centre, z] + 0.3 * u, -u)
+        path.append(q if hit is None else hit[0] + (ICE_LEDGE + ICICLE_CLEAR) * hit[1])
+    path = np.array(path)
+    return np.array([path[max(0, k - 2):k + 3].mean(axis=0) for k in range(len(path))])
+
+
+def _clear(path, radii, th, centre):
+    """`path` with each point moved out along its bearing until its ring is outside the robot."""
+    path = path.copy()
+    for k, t in enumerate(th):
+        u = np.array([np.cos(t), np.sin(t), 0.0])
+        for _ in range(30):
+            if not _in_robot(_rings(path, radii, 10)[2][k], centre):
+                break
+            path[k] += 0.0002 * u
+    return path
 
 
 def _in_robot(points, centre):
@@ -383,23 +414,30 @@ def _icicle(spec, torso, name, root, bearing, centre, rng):
     length = 0.004 + 0.010 * rng.beta(1.3, 2.5)
     if rng.random() < 0.15:
         length = rng.uniform(0.014, 0.024)
-    r0 = 0.0006 + 0.05 * length + rng.uniform(0.0, 0.0004)
+    r0 = min(0.0006 + 0.05 * length + rng.uniform(0.0, 0.0004), 0.9 * ICE_LEDGE)
     u = np.array([np.cos(bearing), np.sin(bearing), 0.0])
     s = np.linspace(0.0, 1.0, 14)
     radii = r0 * (1 - s) ** 1.2
 
     while length >= 0.003:
-        path, last = [], root
-        for sk, rk in zip(s, radii):
-            p = np.array([last[0], last[1], root[2] - sk * length])
-            hit = _side([*centre, p[2]] + 0.3 * u, -u)
+        out = np.zeros(len(s))
+        for k, (sk, rk) in enumerate(zip(s, radii)):
+            hit = _side([*centre, root[2] - sk * length] + 0.3 * u, -u)
             if hit is not None:
                 # Out along the bearing far enough to be rk + ICICLE_CLEAR off the surface.
                 q = hit[0] + (rk + ICICLE_CLEAR) / max(hit[1] @ u, 0.3) * u
-                if np.linalg.norm(q[:2] - centre) > np.linalg.norm(last[:2] - centre):
-                    p[:2] = q[:2]
-            path.append(p)
-            last = p
+                out[k] = max(0.0, (q - root) @ u)
+        # The smallest concave curve over those offsets: close to the side, with no kinks.
+        hull = [0]
+        for k in range(1, len(s)):
+            while len(hull) > 1:
+                a, b = hull[-2], hull[-1]
+                if ((s[b] - s[a]) * (out[k] - out[a]) - (out[b] - out[a]) * (s[k] - s[a])) < 0:
+                    break
+                hull.pop()
+            hull.append(k)
+        out = np.interp(s, s[hull], out[hull])
+        path = root + np.outer(out, u) - np.outer(s * length, [0.0, 0.0, 1.0])
         if not _in_robot(np.vstack(_rings(path, radii, 10)[2]), centre):
             break
         length *= 0.8
