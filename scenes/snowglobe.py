@@ -179,7 +179,8 @@ def _cover(spec, torso, level, nt=120, ns=48):
     The edge runs down the shell's sides to COVER_EDGE_Z, wavering a little, or stops at
     the outline where the side is too steep to hold it, and short of the display. The
     snow is laid along the shell's normal, so it keeps its depth on the steep sides.
-    Returns the edge's top points and their bearings from the shell's centre.
+    Returns the shell points under the edge, where the snow ends, and their bearings
+    from the shell's centre.
     """
     m, d, geoms = _shell()
     centre = d.geom_xpos[geoms[0]][:2]
@@ -249,7 +250,7 @@ def _cover(spec, torso, level, nt=120, ns=48):
         faces += [(a, b, a + half), (a + half, b, b + half)]
         outward += [out, out]
     _mesh(spec, torso, "cover", verts, faces, outward, SNOW)
-    return verts[half - nt:half], th
+    return verts[-nt:], th
 
 
 def _rings(path, radii, sides=8):
@@ -323,7 +324,7 @@ def _side(pnt, vec):
 
 
 def _icicles(spec, torso, edge, th, rng):
-    """Icicles hanging from the snow's edge down the shell's sides.
+    """Icicles hanging from under the snow's edge down the shell's sides.
 
     None hangs over the display.
     """
