@@ -29,15 +29,15 @@ from .registry import Scene, load
 
 BASE_ENV = "MJRL_SNOWGLOBE_BASE"
 
-R = 0.068                    # globe radius
+R = 0.076                    # globe radius
 RIN = 0.985 * R              # props stay inside this
-CENTRE_XY = (-0.010, 0.0)    # the glass stops short of the display
-GLOBE_RISE = 0.5             # centre above the shell, in R: the shell hides the rest
+CENTRE_XY = (-0.015, 0.0)    # the shell's top reaches 75 mm or more every way from here
+GLOBE_RISE = 0.45            # centre above the shell, in R: the shell hides the rest
 CONTACT = R * np.sqrt(1 - GLOBE_RISE**2)   # where the glass meets the shell
 
 # Snow on the shell: depth, how high it banks against the glass and how far out that
 # reaches, and where it stops. The bank stays below the snow inside the globe.
-COVER_DEPTH, SNOW_BANK, DRIFT_REACH = 0.003, 0.12 * R, 0.02
+COVER_DEPTH, SNOW_BANK, DRIFT_REACH = 0.003, 0.08 * R, 0.015
 COVER_EDGE_Z, DISPLAY_X = 0.044, 0.062
 ICE_LEDGE = 0.0014                       # radius of the ice along the snow's edge
 ICICLE_GAP = (0.0022, 0.0035)            # spacing range along the edge
@@ -59,7 +59,7 @@ ICY = {
     "base_link_visual": (0.06, 0.10, 0.18, 1.0),
 }
 
-SPECKS, FLAKES, SEED = 480, 90, 11
+SPECKS, FLAKES, SEED = 600, 110, 11
 
 # Layout in units of R from the globe's centre; +x is the robot's front.
 MOUNTAINS = ((-0.52, -0.28, 0.34, 0.62), (-0.48, 0.30, 0.32, 0.52), (-0.68, 0.0, 0.24, 0.42))
@@ -110,12 +110,11 @@ def dress(spec) -> None:
             if colour is not None:
                 _paint(geom, colour)
 
-    # The shell's level under the glass: between its mean and highest points there, so
-    # the snow has little to fill at the back and the front stays clear.
+    # The shell's mean level under the glass's contact ring; the snow fills where it is lower.
     th = np.linspace(0, 2 * np.pi, 24, endpoint=False)
     ring = np.column_stack([np.cos(th), np.sin(th)]) * CONTACT + CENTRE_XY
     under = [_top(p)[0][2] for p in ring]
-    level = (np.mean(under) + max(under)) / 2
+    level = np.mean(under)
     c = np.array([*CENTRE_XY, level + GLOBE_RISE * R])
     edge, th = _cover(spec, torso, level)
     _icicles(spec, torso, edge, th, np.random.default_rng(SEED + 1))
