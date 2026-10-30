@@ -6,7 +6,7 @@ sunk to below its middle, in snow that covers the shell and banks up against the
 glass. Inside is a snowy village under mountains: two houses with
 lit windows, pine trees, a snowman and a street lamp. Flat flakes sit just
 inside the glass and a few hang in the air. The rest of the robot is ice blue,
-an ice ledge runs along the snow's edge, and icicles hang off the shell's bottom edge.
+and icicles hang from the snow's edge, where the shell's top turns down its side.
 
 Every limb keeps one solid colour, as a `.skin` carries it; only geometry fixed
 to the shell is added.
@@ -39,8 +39,8 @@ CONTACT = R * np.sqrt(1 - GLOBE_RISE**2)   # where the glass meets the shell
 # reaches, and where it stops. The bank stays below the snow inside the globe.
 COVER_DEPTH, SNOW_BANK, DRIFT_REACH = 0.003, 0.08 * R, 0.015
 COVER_EDGE_Z, DISPLAY_X = 0.044, 0.062
-ICE_LEDGE = 0.0014                       # radius of the ice along the snow's edge
 ICICLE_GAP = (0.0022, 0.0035)            # spacing range along the edge
+ICICLE_CLEAR = 0.0004                    # gap left between an icicle and the robot's side
 
 GLASS = (0.85, 0.93, 1.0, 0.13)
 SNOW = (0.95, 0.97, 1.0, 1.0)
@@ -117,13 +117,7 @@ def dress(spec) -> None:
     level = np.mean(under)
     c = np.array([*CENTRE_XY, level + GLOBE_RISE * R])
     edge, th = _cover(spec, torso, level)
-    ice = np.random.default_rng(SEED + 1)
-    _icicles(spec, torso, "snow", edge, th, ice, hang=False)
-    rim = np.array([np.full(3, np.nan) if q is None else q for q in _rim(th)])
-    # Break the rim where its height jumps (round the leg cut-outs), so the ledge never kinks.
-    near = np.nanmedian([np.roll(rim[:, 2], k) for k in range(-3, 4)], axis=0)
-    rim[np.abs(rim[:, 2] - near) > 0.002] = np.nan
-    _icicles(spec, torso, "rim", rim, th, ice)
+    _icicles(spec, torso, edge, th, np.random.default_rng(SEED + 1))
     add(torso, "glass", mujoco.mjtGeom.mjGEOM_SPHERE, (R,), "globe_glass", pos=c)
 
     rng = np.random.default_rng(SEED)
@@ -196,8 +190,10 @@ def _cover(spec, torso, level, nt=120, ns=48):
 
         def stops(rho):
             xy = centre + rho * u
-            hit = _top(xy)
-            return hit is None or hit[0][2] < edge_z[j] or xy[0] > DISPLAY_X
+            hit, inside = _top(xy), _top(xy - 0.001 * u)
+            # Past the top's edge: where it turns steeper than 45 degrees down the side.
+            return (hit is None or inside is None or hit[0][2] < edge_z[j]
+                    or inside[0][2] - hit[0][2] > 0.001 or xy[0] > DISPLAY_X)
 
         for rho in np.arange(0.002, 0.15, 0.001):
             if stops(rho):
@@ -301,32 +297,6 @@ def _tube(spec, body, name, path, radii, colour, sides=8, prefix="globe"):
     return _mesh(spec, body, name, verts, faces, outward, colour, prefix)
 
 
-def _rim(th):
-    """The upper shell's bottom edge on the outside of its wall, at each bearing.
-
-    None where the wall is open (a leg's cut-out) at COVER_EDGE_Z already.
-    """
-    import mujoco
-
-    m, d, geoms = _shell()
-    centre = d.geom_xpos[geoms[0]][:2]
-    rim = []
-    for t in th:
-        u = np.array([np.cos(t), np.sin(t), 0.0])
-        lowest = None
-        for z in np.arange(COVER_EDGE_Z, 0.020, -0.0005):
-            origin = np.array([*centre, z]) + 0.3 * u
-            dist = mujoco.mj_rayMesh(m, d, geoms[0], origin, -u, np.zeros(3))
-            q = origin - dist * u
-            # Stop below the wall: the ray misses, or reaches in past the wall's face.
-            if dist < 0 or (lowest is not None and np.linalg.norm(q[:2] - centre)
-                            < np.linalg.norm(lowest[:2] - centre) - 0.003):
-                break
-            lowest = q
-        rim.append(lowest)
-    return rim
-
-
 def _side(pnt, vec):
     """Where a ray first meets the shell, display or lower body, and the normal facing it."""
     import mujoco
@@ -342,15 +312,14 @@ def _side(pnt, vec):
     return None if best is None else (pnt + best[0] * vec, best[1])
 
 
-def _icicles(spec, torso, name, edge, th, rng, hang=True):
-    """An ice ledge along `edge`, with icicles hanging from it when `hang`.
+def _icicles(spec, torso, edge, th, rng):
+    """Icicles hanging from the snow's edge, where the shell's top turns down its side.
 
-    Each icicle hugs the robot's side while it leans out under it and hangs straight
-    where it tucks in. Nothing goes over the display; NaN points are gaps.
+    None hangs over the display.
     """
     m, d, geoms = _shell()
     centre = d.geom_xpos[geoms[0]][:2]
-    ok = np.isfinite(edge[:, 0]) & (np.nan_to_num(edge[:, 0], nan=1.0) < DISPLAY_X - 0.012)
+    ok = edge[:, 0] < DISPLAY_X - 0.012
     runs, run = [], []
     for j in np.roll(np.arange(len(edge)), -int(np.argmin(ok))):
         if ok[j]:
@@ -362,30 +331,25 @@ def _icicles(spec, torso, name, edge, th, rng, hang=True):
         runs.append(run)
 
     placed = 0
-    for n, run in enumerate(r for r in runs if len(r) > 2):
-        out = np.column_stack([np.cos(th[run]), np.sin(th[run]), np.zeros(len(run))])
-        ledge = edge[run] + 0.0006 * out - [0.0, 0.0, 0.0007]
-        ledge = np.array([ledge[max(0, k - 2):k + 3].mean(axis=0) for k in range(len(ledge))])
-        radii = ICE_LEDGE * (1 + 0.12 * np.sin(np.arange(len(run)) * 0.9 + n))
-        radii[0] = radii[-1] = 0.0
-        _tube(spec, torso, f"{name}_ledge{n}", ledge, radii, "globe_icicle")
-        if not hang:
-            continue
-
+    for run in (r for r in runs if len(r) > 2):
+        lip = edge[run] - [0.0, 0.0, 0.0005]     # just under the snow's lip
         bearing = np.unwrap(th[run])
-        along = np.concatenate([[0.0], np.cumsum(np.linalg.norm(np.diff(ledge, axis=0),
-                                                                axis=1))])
+        along = np.concatenate([[0.0], np.cumsum(np.linalg.norm(np.diff(lip, axis=0), axis=1))])
         at = rng.uniform(*ICICLE_GAP) / 2
         while at < along[-1] - ICICLE_GAP[0]:
-            root = np.array([np.interp(at, along, ledge[:, k]) for k in range(3)])
+            root = np.array([np.interp(at, along, lip[:, k]) for k in range(3)])
             bear = np.interp(at, along, bearing)
-            _icicle(spec, torso, f"{name}_icicle{placed}", root, bear, centre, rng)
+            _icicle(spec, torso, f"icicle{placed}", root, bear, centre, rng)
             placed += 1
             at += rng.uniform(*ICICLE_GAP)
 
 
 def _icicle(spec, torso, name, root, bearing, centre, rng):
-    """One icicle from `root` down the robot's side, thick at the root, tapering to a point."""
+    """One icicle hanging straight down from `root`, thick at the root, tapering to a point.
+
+    It stands off the robot's side by its radius and ICICLE_CLEAR, and is shortened where
+    the side leans out under it; one that would be under 3 mm is left out.
+    """
     length = 0.004 + 0.010 * rng.beta(1.3, 2.5)
     if rng.random() < 0.15:
         length = rng.uniform(0.014, 0.024)
@@ -393,18 +357,21 @@ def _icicle(spec, torso, name, root, bearing, centre, rng):
     u = np.array([np.cos(bearing), np.sin(bearing), 0.0])
     s = np.linspace(0.0, 1.0, 14)
     radii = r0 * (1 - s) ** 1.2
-    path, last = [], root
-    for sk, rk in zip(s, radii):
-        z = root[2] - sk * length
+
+    def wall(z):
         hit = _side([*centre, z] + 0.3 * u, -u)
-        p = np.array([last[0], last[1], z])
-        if hit is not None:
-            normal = hit[1] * [1.0, 1.0, 0.0]
-            q = hit[0] + (rk + 0.0003) * normal / max(np.linalg.norm(normal), 1e-9)
-            if np.linalg.norm(q[:2] - centre) > np.linalg.norm(last[:2] - centre):
-                p[:2] = q[:2]
-        path.append(p)
-        last = p
+        return 0.0 if hit is None else np.linalg.norm(hit[0][:2] - centre)
+
+    rho = wall(root[2]) + r0 + ICICLE_CLEAR
+    while length >= 0.003:
+        z = root[2] - s * length
+        if all(rho >= wall(zk) + rk + ICICLE_CLEAR for zk, rk in zip(z, radii)):
+            break
+        length *= 0.8
+    else:
+        return
+    path = np.column_stack([np.full(len(s), centre[0] + rho * u[0]),
+                            np.full(len(s), centre[1] + rho * u[1]), z])
     _tube(spec, torso, name, path, radii, "globe_icicle", sides=10)
 
 
