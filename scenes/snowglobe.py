@@ -6,7 +6,7 @@ sunk to below its middle, in snow that covers the shell and banks up against the
 glass. Inside is a snowy village under mountains: two houses with
 lit windows, pine trees, a snowman and a street lamp. Flat flakes sit just
 inside the glass and a few hang in the air. The rest of the robot is ice blue,
-and an ice ledge runs along the snow's edge with icicles hanging down the shell.
+an ice ledge runs along the snow's edge, and icicles hang off the shell's bottom edge.
 
 Every limb keeps one solid colour, as a `.skin` carries it; only geometry fixed
 to the shell is added.
@@ -24,7 +24,7 @@ import os
 
 import numpy as np
 
-from .ninja import GREY_PART, PAD_PART, RED_PART, _add, _hit, _paint, _ribbon, _shell, _top
+from .ninja import GREY_PART, PAD_PART, RED_PART, _add, _paint, _ribbon, _shell, _top
 from .registry import Scene, load
 
 BASE_ENV = "MJRL_SNOWGLOBE_BASE"
@@ -117,7 +117,13 @@ def dress(spec) -> None:
     level = np.mean(under)
     c = np.array([*CENTRE_XY, level + GLOBE_RISE * R])
     edge, th = _cover(spec, torso, level)
-    _icicles(spec, torso, edge, th, np.random.default_rng(SEED + 1))
+    ice = np.random.default_rng(SEED + 1)
+    _icicles(spec, torso, "snow", edge, th, ice, hang=False)
+    rim = np.array([np.full(3, np.nan) if q is None else q for q in _rim(th)])
+    # Break the rim where its height jumps (round the leg cut-outs), so the ledge never kinks.
+    near = np.nanmedian([np.roll(rim[:, 2], k) for k in range(-3, 4)], axis=0)
+    rim[np.abs(rim[:, 2] - near) > 0.002] = np.nan
+    _icicles(spec, torso, "rim", rim, th, ice)
     add(torso, "glass", mujoco.mjtGeom.mjGEOM_SPHERE, (R,), "globe_glass", pos=c)
 
     rng = np.random.default_rng(SEED)
@@ -295,15 +301,56 @@ def _tube(spec, body, name, path, radii, colour, sides=8, prefix="globe"):
     return _mesh(spec, body, name, verts, faces, outward, colour, prefix)
 
 
-def _icicles(spec, torso, edge, th, rng):
-    """An ice ledge along the snow's edge, with icicles hanging from it down the shell.
+def _rim(th):
+    """The upper shell's bottom edge on the outside of its wall, at each bearing.
 
-    Each icicle hugs the shell while the shell leans out under it and hangs straight
-    where the shell tucks in. None hangs over the display.
+    None where the wall is open (a leg's cut-out) at COVER_EDGE_Z already.
+    """
+    import mujoco
+
+    m, d, geoms = _shell()
+    centre = d.geom_xpos[geoms[0]][:2]
+    rim = []
+    for t in th:
+        u = np.array([np.cos(t), np.sin(t), 0.0])
+        lowest = None
+        for z in np.arange(COVER_EDGE_Z, 0.020, -0.0005):
+            origin = np.array([*centre, z]) + 0.3 * u
+            dist = mujoco.mj_rayMesh(m, d, geoms[0], origin, -u, np.zeros(3))
+            q = origin - dist * u
+            # Stop below the wall: the ray misses, or reaches in past the wall's face.
+            if dist < 0 or (lowest is not None and np.linalg.norm(q[:2] - centre)
+                            < np.linalg.norm(lowest[:2] - centre) - 0.003):
+                break
+            lowest = q
+        rim.append(lowest)
+    return rim
+
+
+def _side(pnt, vec):
+    """Where a ray first meets the shell, display or lower body, and the normal facing it."""
+    import mujoco
+
+    m, d, geoms = _shell()
+    pnt, vec = np.asarray(pnt, float), np.asarray(vec, float)
+    best = None
+    for g in (*geoms, m.geom("base_link_visual").id):
+        n = np.zeros(3)
+        dist = mujoco.mj_rayMesh(m, d, g, pnt, vec, n)
+        if dist >= 0 and (best is None or dist < best[0]):
+            best = (dist, -n if n @ vec > 0 else n)
+    return None if best is None else (pnt + best[0] * vec, best[1])
+
+
+def _icicles(spec, torso, name, edge, th, rng, hang=True):
+    """An ice ledge along `edge`, with icicles hanging from it when `hang`.
+
+    Each icicle hugs the robot's side while it leans out under it and hangs straight
+    where it tucks in. Nothing goes over the display; NaN points are gaps.
     """
     m, d, geoms = _shell()
     centre = d.geom_xpos[geoms[0]][:2]
-    ok = edge[:, 0] < DISPLAY_X - 0.012
+    ok = np.isfinite(edge[:, 0]) & (np.nan_to_num(edge[:, 0], nan=1.0) < DISPLAY_X - 0.012)
     runs, run = [], []
     for j in np.roll(np.arange(len(edge)), -int(np.argmin(ok))):
         if ok[j]:
@@ -321,7 +368,9 @@ def _icicles(spec, torso, edge, th, rng):
         ledge = np.array([ledge[max(0, k - 2):k + 3].mean(axis=0) for k in range(len(ledge))])
         radii = ICE_LEDGE * (1 + 0.12 * np.sin(np.arange(len(run)) * 0.9 + n))
         radii[0] = radii[-1] = 0.0
-        _tube(spec, torso, f"ledge{n}", ledge, radii, "globe_icicle")
+        _tube(spec, torso, f"{name}_ledge{n}", ledge, radii, "globe_icicle")
+        if not hang:
+            continue
 
         bearing = np.unwrap(th[run])
         along = np.concatenate([[0.0], np.cumsum(np.linalg.norm(np.diff(ledge, axis=0),
@@ -330,13 +379,13 @@ def _icicles(spec, torso, edge, th, rng):
         while at < along[-1] - ICICLE_GAP[0]:
             root = np.array([np.interp(at, along, ledge[:, k]) for k in range(3)])
             bear = np.interp(at, along, bearing)
-            _icicle(spec, torso, f"icicle{placed}", root, bear, centre, rng)
+            _icicle(spec, torso, f"{name}_icicle{placed}", root, bear, centre, rng)
             placed += 1
             at += rng.uniform(*ICICLE_GAP)
 
 
 def _icicle(spec, torso, name, root, bearing, centre, rng):
-    """One icicle from `root` down the shell's side, thick at the root and tapering to a point."""
+    """One icicle from `root` down the robot's side, thick at the root, tapering to a point."""
     length = 0.004 + 0.010 * rng.beta(1.3, 2.5)
     if rng.random() < 0.15:
         length = rng.uniform(0.014, 0.024)
@@ -347,7 +396,7 @@ def _icicle(spec, torso, name, root, bearing, centre, rng):
     path, last = [], root
     for sk, rk in zip(s, radii):
         z = root[2] - sk * length
-        hit = _hit([*centre, z] + 0.3 * u, -u)
+        hit = _side([*centre, z] + 0.3 * u, -u)
         p = np.array([last[0], last[1], z])
         if hit is not None:
             normal = hit[1] * [1.0, 1.0, 0.0]
