@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mujoco model="shellflow-preview">
+  <include file="robot.xml" />
+  <visual>
+    <global offwidth="1200" offheight="900" />
+    <headlight ambient="0.5 0.5 0.5" diffuse="0.7 0.7 0.7" />
+  </visual>
+  <worldbody>
+    <geom name="preview_floor" type="plane" pos="0 0 0" size="2 2 0.1" rgba="0.20 0.23 0.27 1" />
+    <light pos="0 -1 2" dir="0 0 -1" diffuse="0.8 0.8 0.8" />
+  </worldbody>
+  <keyframe>
+    <key name="display_home" qpos="0.0 0.0 0.10704 1.0 0.0 0.0 0.0 -0.5507 -1.0658 -0.4408 -1.4226 0.0 0.5524 -1.066 0.4414 1.4212 0.1 0.0012 0.5356 -1.8321 -0.0012 -0.5376 1.8364 0.6313 0.5534 -1.8708 -0.6326 -0.5548 1.8739" ctrl="" />
+  </keyframe>
+</mujoco>

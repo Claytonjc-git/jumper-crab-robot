@@ -1,0 +1,1144 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "files": [
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/base_link.stl",
+      "sha256": "0c1bd088c12db6ace677238800f81bd270a04270891dee934a3ed8b46dfcd68f",
+      "bytes": 3801984
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/camera_link.stl",
+      "sha256": "02fb606f9630c1c2d6e33ebc99ab27be12bd88664805845f5b72bbb1355f20ae",
+      "bytes": 32484
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/display_module_link.stl",
+      "sha256": "c019dd2abf703c94dc2dbf693acce85e8b62ee9ada1af21a0786afd00bd94b2e",
+      "bytes": 42534
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/LF_finger_grip_insert_link.stl",
+      "sha256": "cf5faec0faa0693b191d89ef58c427e562e983dcb47a6c3eed2f135e0d500c18",
+      "bytes": 115284
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/LF_finger_link.stl",
+      "sha256": "29f8b316d6d3df884bda9a1e19b8f7a6ffc2dcada28c3f52bd560710ea4473b9",
+      "bytes": 408184
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/LF_finger_tip_link.stl",
+      "sha256": "a557c0a840392724c0f544d19299ca6e55651f75143d7d9fce79afe11ae07da8",
+      "bytes": 706784
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/LF_forearm_link.stl",
+      "sha256": "e7b2d8f16bb5efa514c8170e15f093ec0dbca345672534386f0b77b7ff455e4e",
+      "bytes": 450584
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/LF_palm_grip_insert_link.stl",
+      "sha256": "db76fb24837159e3b141420ea5b5b1f2dc8ba2e366a6edeb44f344c0e060795a",
+      "bytes": 128384
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/LF_palm_link.stl",
+      "sha256": "0a69f36298ed1f64b782668b6d0266ccc4b4299593f0071e76333e6577efc177",
+      "bytes": 754084
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/LF_palm_pad_b_link.stl",
+      "sha256": "3acff9d1d21951868df1e0b170c88153e9605861bc3193eb82d8516607abb20e",
+      "bytes": 287384
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/LF_palm_pad_f_link.stl",
+      "sha256": "bd1f4af5c9d4b0a67836a423027d3bd83a913ce9cefe4ee6b276f7ee99c4520f",
+      "bytes": 296784
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/LF_shoulder_link.stl",
+      "sha256": "2565d7fd191af7356479053ce6ba0b1aa4d6c12a1f10ecef13b82690644c9cb2",
+      "bytes": 753784
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/LF_upper_arm_link.stl",
+      "sha256": "f8a5eee25c2e251f7b00e8667150cd01e92bcdd2e31287b2022a972199490abc",
+      "bytes": 605584
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/LM_calf_link.stl",
+      "sha256": "42883897518fd83e09892b3215a8a8564a5bff9cc48602316a1d282d77fbc28d",
+      "bytes": 717984
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/LM_foot_tip_link.stl",
+      "sha256": "364dcfdbf94243f914272f024e6cd1cad95799ab427b38e0235bdadfd10193fc",
+      "bytes": 96784
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/LM_hip_link.stl",
+      "sha256": "a8f14193f1ffa7c177dbecb349b00a461393de7d444d9bd3771b1370fc14298e",
+      "bytes": 658484
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/LM_thigh_link.stl",
+      "sha256": "4724f8aa3248794f7e783a94dc3379dbf04a21dcef2f8c956c29f16652b5b012",
+      "bytes": 450584
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/LR_calf_link.stl",
+      "sha256": "65345119ca4fe8fffea9d0eaf13f1b01509b805eaeb4d17957ecebf82a0e066f",
+      "bytes": 717984
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/LR_foot_tip_link.stl",
+      "sha256": "a9f78dcf40dfa524087764fb2d7604b3411128426dc64bc412ada199c36294a9",
+      "bytes": 96784
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/LR_hip_link.stl",
+      "sha256": "341240e34b243160b564471f1510b993b7247f87acbcb284b65135cd3e37e3c4",
+      "bytes": 658484
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/LR_thigh_link.stl",
+      "sha256": "7b08f377b6712838b90c2225afb2c719111452223554bb08fb503058675db6a0",
+      "bytes": 450584
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/RF_finger_grip_insert_link.stl",
+      "sha256": "bbaff916342d374f7f78c1f03ca71e8dc235174b5d4651e7e2df4e6dc2ca01da",
+      "bytes": 115284
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/RF_finger_link.stl",
+      "sha256": "618b0e23e3f3e7bc8c4d2425692d2580308f721c3062b6479d349defafd26ec4",
+      "bytes": 408184
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/RF_finger_tip_link.stl",
+      "sha256": "16ab474a946915080faa128e6c2f98766e262f3ca8baccd91330e33ef5e2350a",
+      "bytes": 706784
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/RF_forearm_link.stl",
+      "sha256": "af869fb7e3e1a9a4e41acd7187598aac8101276d40ce4e9c9c3da427022d6096",
+      "bytes": 450584
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/RF_palm_grip_insert_link.stl",
+      "sha256": "f3299e00de883e90b8a2f69fd70f1aa291edc9c87f33c051a50d3f4a3040c4d8",
+      "bytes": 128384
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/RF_palm_link.stl",
+      "sha256": "9d74629431797a8472c24e36c8b79e629c28190b490b6a79e28743183d92f33e",
+      "bytes": 754084
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/RF_palm_pad_b_link.stl",
+      "sha256": "793bc432bc333286093f1a5ba5e69b806c4d129a24829757e3b0c7c1ff48bbef",
+      "bytes": 296784
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/RF_palm_pad_f_link.stl",
+      "sha256": "1f777ecee4bcde201aa7614c44af7ad026400819c4735687934c6122ccafebec",
+      "bytes": 287384
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/RF_shoulder_link.stl",
+      "sha256": "f0a00584b81b67ea041220a80fa46d56a5f0af93f509fdb941dde89f707a36d5",
+      "bytes": 753784
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/RF_upper_arm_link.stl",
+      "sha256": "3e40d4a4e96d7cca0fa5540d1a08dfb6ef53f0b0302d0adce72e440429c0a5ce",
+      "bytes": 605584
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/RM_calf_link.stl",
+      "sha256": "18972e56b4f0fd023907bde4e08ecd37b8c7d0b46d906eaf9b34b4caa3dd7f78",
+      "bytes": 669384
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/RM_foot_tip_link.stl",
+      "sha256": "d0e1306ebf0c47412d86dcce89923d3b7a41defecf8bc956bf67634a6202440b",
+      "bytes": 96784
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/RM_hip_link.stl",
+      "sha256": "f0c70f361ecdca1835a9c94b42389ffbf25f0475daded643dac65e61609bfb39",
+      "bytes": 658484
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/RM_thigh_link.stl",
+      "sha256": "e441e75bf98ac85066f56aafc89ec440f04cea6d647cfdab56b2c2e416e545d3",
+      "bytes": 450584
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/RR_calf_link.stl",
+      "sha256": "61a2343865b7bc2982c876b0c682b608c083a6d543b1c33c8c16e08600e8060c",
+      "bytes": 717984
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/RR_foot_tip_link.stl",
+      "sha256": "dfd85194297519dc276d98647e34f1ed88fca2dd06e6d639ce4753cd839d868d",
+      "bytes": 96784
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/RR_hip_link.stl",
+      "sha256": "15cb10d1ef80ecbd9ab5515cd2b4ccf67fb9e350fa938cc31dedb3881c95b803",
+      "bytes": 658484
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/RR_thigh_link.stl",
+      "sha256": "fee24f277a740042a758754c3e81efb805045984698aadd4a3baed557f9cb083",
+      "bytes": 450584
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/tof_sensor_link.stl",
+      "sha256": "4813e253c3b471319254a330f06715473f388f3b91dc7fb8da097cec9724aafd",
+      "bytes": 104484
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/upper_shell_0.stl",
+      "sha256": "25cadf3b3a05f56de945468858315a867f4d3c9b5967911c9e395d81f3176fc9",
+      "bytes": 907284
+    },
+    {
+      "role": "simulation_asset",
+      "path": "meshes/visual/upper_shell_link.stl",
+      "sha256": "25cadf3b3a05f56de945468858315a867f4d3c9b5967911c9e395d81f3176fc9",
+      "bytes": 907284
+    },
+    {
+      "role": "simulation_asset",
+      "path": "preview-pose.json",
+      "sha256": "a9c0455c626a4ef56e5ced0092d5837c999323712577e4719f9559df88fa5448",
+      "bytes": 1408
+    },
+    {
+      "role": "simulation_asset",
+      "path": "preview.py",
+      "sha256": "06ed15e5899fc711c0661c2cb392c70caa12ed2370236b804145d70a06018662",
+      "bytes": 2552
+    },
+    {
+      "role": "simulation_asset",
+      "path": "README.md",
+      "sha256": "0d881ed2898a23a9ec537ac19ff50f78062da90dc964d35d05869b983f63fc10",
+      "bytes": 12086
+    },
+    {
+      "role": "simulation_asset",
+      "path": "robot.urdf",
+      "sha256": "03a7d581b7d7f0c86cd2775cd9e8be2e76fad33408bab620d2b524aa0c392d7d",
+      "bytes": 62787
+    },
+    {
+      "role": "simulation_asset",
+      "path": "robot.xml",
+      "sha256": "66367430bc9e20cc4ba9ea455ccc9009ff3994203f5f8bfb91969e155901d20d",
+      "bytes": 37394
+    },
+    {
+      "role": "simulation_asset",
+      "path": "scene.xml",
+      "sha256": "46080b5e341213d3e3e2373e06f8d8390ef2a86aa8b4cb5f6a580845cc1819f5",
+      "bytes": 713
+    }
+  ],
+  "source_shell_sha256": "ffffc7fabd3582752c2395fb801d63943dc47aa18cc1681a4a9c450634223987",
+  "source_shell_frame": "original-robot-v1 CAD millimeters Z-up",
+  "robot_profile_sha256": "051e5c98ae4d948604bf095667f7eeb329a21b43885cc912c5f4dcbbeb83aef9",
+  "source_step_sha256": "40bcd073e930ee1b3070219b27f2d93c5277259a0eafad45b839ec09f83b8831",
+  "robot_profile_id": "jumper",
+  "robot_source": {
+    "baseline_mjcf_sha256": "36c0015b880926ea808e22181178e2fc21ab6da5b56ea6ec22896757d3492fe1",
+    "kind": "user_maintained_urdf",
+    "source_urdf_sha256": "6e5b22057b59ca7e0187a07254ddf9b7f4f7a2693cf77b368bd89ed8e467a686"
+  },
+  "source_baseline_mjcf_sha256": "36c0015b880926ea808e22181178e2fc21ab6da5b56ea6ec22896757d3492fe1",
+  "transform": {
+    "formula": "p_upper_shell_m = rotation_matrix @ (p_engineering_mm * 0.001) + translation_m",
+    "rotation_matrix": [
+      [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "scale": 0.001,
+    "translation_m": [
+      -0.007009982872697907,
+      -4.1195352903058564e-07,
+      -0.03832006649566816
+    ]
+  },
+  "transform_target_link": "upper_shell_link",
+  "visual_replacement_mode": "dedicated_link",
+  "whole_robot": {
+    "passed": true,
+    "scope": "full_robot",
+    "root_link": "base_link",
+    "robot_links": 41,
+    "movable_joints": 22,
+    "native_actuators": 0,
+    "shell_parent_link": "upper_shell_link",
+    "retained_links": [
+      "base_link",
+      "upper_shell_link",
+      "display_module_link",
+      "tof_sensor_link",
+      "camera_link",
+      "LF_shoulder_link",
+      "LF_upper_arm_link",
+      "LF_forearm_link",
+      "LF_palm_link",
+      "LF_palm_pad_f_link",
+      "LF_palm_pad_b_link",
+      "LF_finger_link",
+      "LF_finger_tip_link",
+      "LF_finger_grip_insert_link",
+      "LF_palm_grip_insert_link",
+      "RF_shoulder_link",
+      "RF_upper_arm_link",
+      "RF_forearm_link",
+      "RF_palm_link",
+      "RF_palm_pad_f_link",
+      "RF_palm_pad_b_link",
+      "RF_palm_grip_insert_link",
+      "RF_finger_link",
+      "RF_finger_grip_insert_link",
+      "RF_finger_tip_link",
+      "LM_hip_link",
+      "LM_thigh_link",
+      "LM_calf_link",
+      "LM_foot_tip_link",
+      "RM_hip_link",
+      "RM_thigh_link",
+      "RM_calf_link",
+      "RM_foot_tip_link",
+      "LR_hip_link",
+      "LR_thigh_link",
+      "LR_calf_link",
+      "LR_foot_tip_link",
+      "RR_hip_link",
+      "RR_thigh_link",
+      "RR_calf_link",
+      "RR_foot_tip_link"
+    ],
+    "retained_movable_joints": [
+      "LF_J0_joint",
+      "LF_J1_joint",
+      "LF_J2_joint",
+      "LF_J3_joint",
+      "LF_J4_joint",
+      "RF_J0_joint",
+      "RF_J1_joint",
+      "RF_J2_joint",
+      "RF_J3_joint",
+      "RF_J4_joint",
+      "LM_J0_joint",
+      "LM_J1_joint",
+      "LM_J2_joint",
+      "RM_J0_joint",
+      "RM_J1_joint",
+      "RM_J2_joint",
+      "LR_J0_joint",
+      "LR_J1_joint",
+      "LR_J2_joint",
+      "RR_J0_joint",
+      "RR_J1_joint",
+      "RR_J2_joint"
+    ]
+  },
+  "seam_registration": {
+    "sample_count": 553,
+    "p95_mm": 0.07274817173751955,
+    "max_mm": 0.08436755079463794,
+    "p95_limit_mm": 0.25,
+    "max_limit_mm": 1.0,
+    "scope": "finite shared-interface samples for display registration, not physical fit",
+    "passed": true
+  },
+  "simplification": {
+    "mode": "original_mesh_bytes",
+    "faces": 18144,
+    "decimation_applied": false
+  },
+  "colors": {
+    "mode": "original_baseline",
+    "rgba": "0.85 0.08 0.05 1"
+  },
+  "urdf_conversion": {
+    "schema_version": 1,
+    "source_sha256": "66367430bc9e20cc4ba9ea455ccc9009ff3994203f5f8bfb91969e155901d20d",
+    "urdf_sha256": "03a7d581b7d7f0c86cd2775cd9e8be2e76fad33408bab620d2b524aa0c392d7d",
+    "counts": {
+      "body_links": 41,
+      "fixed_joints": 18,
+      "movable_joints": 22,
+      "floating_joints": 1,
+      "visuals": 82,
+      "collisions": 41
+    },
+    "world_link": "world",
+    "joints": [
+      {
+        "name": "floating_base",
+        "parent": "world",
+        "child": "base_link",
+        "type": "floating"
+      },
+      {
+        "name": "upper_shell_joint",
+        "parent": "base_link",
+        "child": "upper_shell_link",
+        "type": "fixed"
+      },
+      {
+        "name": "display_module_joint",
+        "parent": "base_link",
+        "child": "display_module_link",
+        "type": "fixed"
+      },
+      {
+        "name": "tof_sensor_joint",
+        "parent": "base_link",
+        "child": "tof_sensor_link",
+        "type": "fixed"
+      },
+      {
+        "name": "camera_joint",
+        "parent": "base_link",
+        "child": "camera_link",
+        "type": "fixed"
+      },
+      {
+        "name": "LF_J0_joint",
+        "parent": "base_link",
+        "child": "LF_shoulder_link",
+        "type": "revolute"
+      },
+      {
+        "name": "LF_J1_joint",
+        "parent": "LF_shoulder_link",
+        "child": "LF_upper_arm_link",
+        "type": "revolute"
+      },
+      {
+        "name": "LF_J2_joint",
+        "parent": "LF_upper_arm_link",
+        "child": "LF_forearm_link",
+        "type": "revolute"
+      },
+      {
+        "name": "LF_J3_joint",
+        "parent": "LF_forearm_link",
+        "child": "LF_palm_link",
+        "type": "revolute"
+      },
+      {
+        "name": "LF_palm_pad_f_joint",
+        "parent": "LF_palm_link",
+        "child": "LF_palm_pad_f_link",
+        "type": "fixed"
+      },
+      {
+        "name": "LF_palm_pad_b_joint",
+        "parent": "LF_palm_link",
+        "child": "LF_palm_pad_b_link",
+        "type": "fixed"
+      },
+      {
+        "name": "LF_J4_joint",
+        "parent": "LF_palm_link",
+        "child": "LF_finger_link",
+        "type": "revolute"
+      },
+      {
+        "name": "LF_finger_tip_joint",
+        "parent": "LF_finger_link",
+        "child": "LF_finger_tip_link",
+        "type": "fixed"
+      },
+      {
+        "name": "LF_finger_grip_insert_joint",
+        "parent": "LF_finger_link",
+        "child": "LF_finger_grip_insert_link",
+        "type": "fixed"
+      },
+      {
+        "name": "LF_palm_grip_insert_joint",
+        "parent": "LF_palm_link",
+        "child": "LF_palm_grip_insert_link",
+        "type": "fixed"
+      },
+      {
+        "name": "RF_J0_joint",
+        "parent": "base_link",
+        "child": "RF_shoulder_link",
+        "type": "revolute"
+      },
+      {
+        "name": "RF_J1_joint",
+        "parent": "RF_shoulder_link",
+        "child": "RF_upper_arm_link",
+        "type": "revolute"
+      },
+      {
+        "name": "RF_J2_joint",
+        "parent": "RF_upper_arm_link",
+        "child": "RF_forearm_link",
+        "type": "revolute"
+      },
+      {
+        "name": "RF_J3_joint",
+        "parent": "RF_forearm_link",
+        "child": "RF_palm_link",
+        "type": "revolute"
+      },
+      {
+        "name": "RF_palm_pad_f_joint",
+        "parent": "RF_palm_link",
+        "child": "RF_palm_pad_f_link",
+        "type": "fixed"
+      },
+      {
+        "name": "RF_palm_pad_b_joint",
+        "parent": "RF_palm_link",
+        "child": "RF_palm_pad_b_link",
+        "type": "fixed"
+      },
+      {
+        "name": "RF_palm_grip_insert_joint",
+        "parent": "RF_palm_link",
+        "child": "RF_palm_grip_insert_link",
+        "type": "fixed"
+      },
+      {
+        "name": "RF_J4_joint",
+        "parent": "RF_palm_link",
+        "child": "RF_finger_link",
+        "type": "revolute"
+      },
+      {
+        "name": "RF_finger_grip_insert_joint",
+        "parent": "RF_finger_link",
+        "child": "RF_finger_grip_insert_link",
+        "type": "fixed"
+      },
+      {
+        "name": "RF_finger_tip_joint",
+        "parent": "RF_finger_link",
+        "child": "RF_finger_tip_link",
+        "type": "fixed"
+      },
+      {
+        "name": "LM_J0_joint",
+        "parent": "base_link",
+        "child": "LM_hip_link",
+        "type": "revolute"
+      },
+      {
+        "name": "LM_J1_joint",
+        "parent": "LM_hip_link",
+        "child": "LM_thigh_link",
+        "type": "revolute"
+      },
+      {
+        "name": "LM_J2_joint",
+        "parent": "LM_thigh_link",
+        "child": "LM_calf_link",
+        "type": "revolute"
+      },
+      {
+        "name": "LM_foot_tip_joint",
+        "parent": "LM_calf_link",
+        "child": "LM_foot_tip_link",
+        "type": "fixed"
+      },
+      {
+        "name": "RM_J0_joint",
+        "parent": "base_link",
+        "child": "RM_hip_link",
+        "type": "revolute"
+      },
+      {
+        "name": "RM_J1_joint",
+        "parent": "RM_hip_link",
+        "child": "RM_thigh_link",
+        "type": "revolute"
+      },
+      {
+        "name": "RM_J2_joint",
+        "parent": "RM_thigh_link",
+        "child": "RM_calf_link",
+        "type": "revolute"
+      },
+      {
+        "name": "RM_foot_tip_joint",
+        "parent": "RM_calf_link",
+        "child": "RM_foot_tip_link",
+        "type": "fixed"
+      },
+      {
+        "name": "LR_J0_joint",
+        "parent": "base_link",
+        "child": "LR_hip_link",
+        "type": "revolute"
+      },
+      {
+        "name": "LR_J1_joint",
+        "parent": "LR_hip_link",
+        "child": "LR_thigh_link",
+        "type": "revolute"
+      },
+      {
+        "name": "LR_J2_joint",
+        "parent": "LR_thigh_link",
+        "child": "LR_calf_link",
+        "type": "revolute"
+      },
+      {
+        "name": "LR_foot_tip_joint",
+        "parent": "LR_calf_link",
+        "child": "LR_foot_tip_link",
+        "type": "fixed"
+      },
+      {
+        "name": "RR_J0_joint",
+        "parent": "base_link",
+        "child": "RR_hip_link",
+        "type": "revolute"
+      },
+      {
+        "name": "RR_J1_joint",
+        "parent": "RR_hip_link",
+        "child": "RR_thigh_link",
+        "type": "revolute"
+      },
+      {
+        "name": "RR_J2_joint",
+        "parent": "RR_thigh_link",
+        "child": "RR_calf_link",
+        "type": "revolute"
+      },
+      {
+        "name": "RR_foot_tip_joint",
+        "parent": "RR_calf_link",
+        "child": "RR_foot_tip_link",
+        "type": "fixed"
+      }
+    ],
+    "velocity_assumptions": [
+      {
+        "joint": "LF_J0_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "LF_J1_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "LF_J2_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "LF_J3_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "LF_J4_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "RF_J0_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "RF_J1_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "RF_J2_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "RF_J3_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "RF_J4_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "LM_J0_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "LM_J1_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "LM_J2_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "RM_J0_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "RM_J1_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "RM_J2_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "LR_J0_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "LR_J1_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "LR_J2_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "RR_J0_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "RR_J1_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      },
+      {
+        "joint": "RR_J2_joint",
+        "velocity": 42.0,
+        "unit": "rad/s",
+        "basis": "source_urdf"
+      }
+    ],
+    "effort_sources": [
+      {
+        "joint": "LF_J0_joint",
+        "effort": 1.5,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "LF_J1_joint",
+        "effort": 0.7,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "LF_J2_joint",
+        "effort": 0.7,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "LF_J3_joint",
+        "effort": 0.7,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "LF_J4_joint",
+        "effort": 1.5,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "RF_J0_joint",
+        "effort": 1.5,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "RF_J1_joint",
+        "effort": 0.7,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "RF_J2_joint",
+        "effort": 0.7,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "RF_J3_joint",
+        "effort": 0.7,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "RF_J4_joint",
+        "effort": 1.5,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "LM_J0_joint",
+        "effort": 1.5,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "LM_J1_joint",
+        "effort": 0.7,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "LM_J2_joint",
+        "effort": 0.7,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "RM_J0_joint",
+        "effort": 1.5,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "RM_J1_joint",
+        "effort": 0.7,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "RM_J2_joint",
+        "effort": 0.7,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "LR_J0_joint",
+        "effort": 1.5,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "LR_J1_joint",
+        "effort": 0.7,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "LR_J2_joint",
+        "effort": 0.7,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "RR_J0_joint",
+        "effort": 1.5,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "RR_J1_joint",
+        "effort": 0.7,
+        "basis": "source_urdf_and_native_joint"
+      },
+      {
+        "joint": "RR_J2_joint",
+        "effort": 0.7,
+        "basis": "source_urdf_and_native_joint"
+      }
+    ],
+    "warnings": [
+      "URDF has no native MJCF actuator/controller, sensor/site, solver or contact-filter equivalence; use the companion MJCF for simulation behavior.",
+      "Joint names, effort and velocity limits are retained from the hash-bound source URDF metadata.",
+      "Joint armature and MJCF contact friction/solref/solimp are not represented by this URDF."
+    ],
+    "actuators_in_source": 0,
+    "sites_in_source": 0,
+    "inertia_frame": "link_aligned_full_tensor_with_preserved_center_of_mass",
+    "physics_equivalent": false,
+    "physical_fit_tested": false
+  },
+  "urdf_verification": {
+    "schema_version": 1,
+    "mujoco_version": "3.10.0",
+    "source_sha256": "66367430bc9e20cc4ba9ea455ccc9009ff3994203f5f8bfb91969e155901d20d",
+    "urdf_sha256": "03a7d581b7d7f0c86cd2775cd9e8be2e76fad33408bab620d2b524aa0c392d7d",
+    "source": {
+      "bodies_with_world": 42,
+      "joints": 23,
+      "nq": 29,
+      "nv": 28,
+      "actuators": 0
+    },
+    "urdf": {
+      "bodies_with_world": 42,
+      "joints": 23,
+      "nq": 29,
+      "nv": 28,
+      "actuators": 0
+    },
+    "fk_poses": 10,
+    "failures": [],
+    "max_absolute_errors": {
+      "generalized_position_dof_counts": 0.0,
+      "body_mass": 0.0,
+      "body_ipos": 0.0,
+      "jnt_type": 0.0,
+      "jnt_axis": 0.0,
+      "jnt_range": 0.0,
+      "jnt_limited": 0.0,
+      "body_inertia_tensor_kg_m2": 0.0,
+      "fk_body_position_m": 0.0,
+      "fk_body_rotation_matrix": 0.0
+    },
+    "scope": "Named-body FK, mass, COM, inertial tensor and joint type/axis/ranges. Actuators, armature and contact behavior remain native-MJCF-only.",
+    "physics_equivalent": false,
+    "physical_fit_tested": false,
+    "passed": true,
+    "status": "passed"
+  },
+  "preview_pose": {
+    "all_joint_limits_checked": true,
+    "base_height_m": 0.10704,
+    "corrections": {
+      "RF_J4_joint": {
+        "basis": "nearest value within latest authored URDF joint limit",
+        "display_position_rad": 0.1,
+        "source_limit_rad": [
+          0.1,
+          1.6
+        ],
+        "source_position_rad": 0.0
+      }
+    },
+    "joints": {
+      "LF_J0_joint": -0.5507,
+      "LF_J1_joint": -1.0658,
+      "LF_J2_joint": -0.4408,
+      "LF_J3_joint": -1.4226,
+      "LF_J4_joint": 0.0,
+      "LM_J0_joint": 0.0012,
+      "LM_J1_joint": 0.5356,
+      "LM_J2_joint": -1.8321,
+      "LR_J0_joint": 0.6313,
+      "LR_J1_joint": 0.5534,
+      "LR_J2_joint": -1.8708,
+      "RF_J0_joint": 0.5524,
+      "RF_J1_joint": -1.066,
+      "RF_J2_joint": 0.4414,
+      "RF_J3_joint": 1.4212,
+      "RF_J4_joint": 0.1,
+      "RM_J0_joint": -0.0012,
+      "RM_J1_joint": -0.5376,
+      "RM_J2_joint": 1.8364,
+      "RR_J0_joint": -0.6326,
+      "RR_J1_joint": -0.5548,
+      "RR_J2_joint": 1.8739
+    },
+    "mapping_method": "old_joint_to_old_child_to_audited_new_child_to_new_joint",
+    "scope": "Static nearest valid pose, not retained standing HOME or calibrated gripper. No controller, collision, dynamics or physical-fit certification.",
+    "source_audit_sha256": "510b3ea4afb7f344828f5b29a51983c586c561e424c9246140479360d59ab75c",
+    "source_legacy_pose_sha256": "57487e295490eb950f7cb5462a14bb3d4ea0647df6c62c2b87926025d4c6b138"
+  },
+  "producer_code_sha256": {
+    "simulation.py": "9072b10e45a5d8e0e6602e26722e9006cf796a38afb5ec40c101cbded17eee4c",
+    "urdf.py": "f2fff6589769b38bc38c6e0b61be9c556f2f21c474fc61089f771854528afe00",
+    "ams_colors.py": "887037906ba8dd052bd45da27d3b798ae2b5fe7b158d22b012045959d9ac91ba",
+    "preview_simulation.py": "06ed15e5899fc711c0661c2cb392c70caa12ed2370236b804145d70a06018662",
+    "build_original_skin.py": "236330db5e1e4dc3e921aeb4f48d7947dc404203d0036f377671da7a429c96f3"
+  },
+  "native_mujoco": {
+    "passed": true,
+    "checks": {
+      "nq_preserved": true,
+      "nv_preserved": true,
+      "njnt_preserved": true,
+      "nu_preserved": true,
+      "nbody_preserved": true,
+      "ncam_preserved": true,
+      "nsensor_preserved": true,
+      "jnt_type_preserved": true,
+      "jnt_range_preserved": true,
+      "jnt_axis_preserved": true,
+      "jnt_pos_preserved": true,
+      "dof_damping_preserved": true,
+      "dof_armature_preserved": true,
+      "body_mass_preserved": true,
+      "body_inertia_preserved": true,
+      "body_ipos_preserved": true,
+      "body_iquat_preserved": true,
+      "actuator_gainprm_preserved": true,
+      "sensor_type_preserved": true,
+      "sensor_objid_preserved": true,
+      "sensor_dim_preserved": true,
+      "cam_pos_preserved": true,
+      "cam_quat_preserved": true,
+      "joint_names_preserved": true,
+      "collision_base_link_collision_preserved": true,
+      "collision_upper_shell_link_collision_preserved": true,
+      "collision_display_module_link_collision_preserved": true,
+      "collision_tof_sensor_link_collision_preserved": true,
+      "collision_camera_link_collision_preserved": true,
+      "collision_LF_shoulder_link_collision_preserved": true,
+      "collision_LF_upper_arm_link_collision_preserved": true,
+      "collision_LF_forearm_link_collision_preserved": true,
+      "collision_LF_palm_link_collision_preserved": true,
+      "collision_LF_palm_pad_f_link_collision_preserved": true,
+      "collision_LF_palm_pad_b_link_collision_preserved": true,
+      "collision_LF_finger_link_collision_preserved": true,
+      "collision_LF_finger_tip_link_collision_preserved": true,
+      "collision_LF_finger_grip_insert_link_collision_preserved": true,
+      "collision_LF_palm_grip_insert_link_collision_preserved": true,
+      "collision_RF_shoulder_link_collision_preserved": true,
+      "collision_RF_upper_arm_link_collision_preserved": true,
+      "collision_RF_forearm_link_collision_preserved": true,
+      "collision_RF_palm_link_collision_preserved": true,
+      "collision_RF_palm_pad_f_link_collision_preserved": true,
+      "collision_RF_palm_pad_b_link_collision_preserved": true,
+      "collision_RF_palm_grip_insert_link_collision_preserved": true,
+      "collision_RF_finger_link_collision_preserved": true,
+      "collision_RF_finger_grip_insert_link_collision_preserved": true,
+      "collision_RF_finger_tip_link_collision_preserved": true,
+      "collision_LM_hip_link_collision_preserved": true,
+      "collision_LM_thigh_link_collision_preserved": true,
+      "collision_LM_calf_link_collision_preserved": true,
+      "collision_LM_foot_tip_link_collision_preserved": true,
+      "collision_RM_hip_link_collision_preserved": true,
+      "collision_RM_thigh_link_collision_preserved": true,
+      "collision_RM_calf_link_collision_preserved": true,
+      "collision_RM_foot_tip_link_collision_preserved": true,
+      "collision_LR_hip_link_collision_preserved": true,
+      "collision_LR_thigh_link_collision_preserved": true,
+      "collision_LR_calf_link_collision_preserved": true,
+      "collision_LR_foot_tip_link_collision_preserved": true,
+      "collision_RR_hip_link_collision_preserved": true,
+      "collision_RR_thigh_link_collision_preserved": true,
+      "collision_RR_calf_link_collision_preserved": true,
+      "collision_RR_foot_tip_link_collision_preserved": true
+    },
+    "preserved_collision_geoms": 41,
+    "actuators": 0,
+    "joints": 23,
+    "mujoco_version": "3.10.0",
+    "finite_steps": 10,
+    "smoke_initial_pose": "default_clamped_to_authored_joint_limits",
+    "smoke_pose_corrections": {
+      "RF_J4_joint": {
+        "before": 0.0,
+        "after": 0.1
+      }
+    },
+    "physical_dynamics_validated": false
+  },
+  "urdf_load": {
+    "passed": true,
+    "nq": 29,
+    "nv": 28,
+    "joints": 23
+  },
+  "collision_policy": "baseline_preserved",
+  "inertia_policy": "baseline_preserved",
+  "physical_fit_tested": false,
+  "physical_dynamics_validated": false,
+  "dependencies": {
+    "numpy": "1.26.4",
+    "scipy": "1.17.1",
+    "trimesh": "4.12.2",
+    "mujoco": "3.10.0",
+    "fast-simplification": "0.2.0"
+  },
+  "limitations": [
+    "Static display and digital model validation only; no physical trial or policy validation"
+  ],
+  "visual_overrides": [],
+  "original_visual": {
+    "source": "meshes/visual/upper_shell_link.stl",
+    "sha256": "25cadf3b3a05f56de945468858315a867f4d3c9b5967911c9e395d81f3176fc9",
+    "byte_identical": true
+  },
+  "distribution_license": "Apache-2.0"
+}

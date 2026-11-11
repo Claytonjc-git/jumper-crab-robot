@@ -1,0 +1,259 @@
+{
+  "export": {
+    "ok": true,
+    "schema": "kk-scene-package/2",
+    "id": "beach",
+    "output": "C:\\Users\\clayt\\Documents\\Jumper Crab\\Ready to Upload\\beach.map",
+    "sha256": "fc4b2b04b71e8c78c32b2ffded3a2cb6732ddecab4b5692d871c2d2c59c90801",
+    "file_count": 68,
+    "robot": {
+      "skinRoot": "robot",
+      "skinId": "jumper-original",
+      "platformId": "jumper",
+      "profileSha256": "051e5c98ae4d948604bf095667f7eeb329a21b43885cc912c5f4dcbbeb83aef9"
+    },
+    "spawn_support": {
+      "passed": true,
+      "tolerance_m": 0.03,
+      "samples": [
+        {
+          "xy": [
+            0.0,
+            0.0
+          ],
+          "support_z": 0.0,
+          "visual_z": 0.0,
+          "support_geom_id": 149
+        },
+        {
+          "xy": [
+            0.05,
+            0.0
+          ],
+          "support_z": 0.0,
+          "visual_z": 0.0,
+          "support_geom_id": 149
+        },
+        {
+          "xy": [
+            -0.05,
+            0.0
+          ],
+          "support_z": 0.0,
+          "visual_z": 0.0,
+          "support_geom_id": 149
+        },
+        {
+          "xy": [
+            0.0,
+            0.05
+          ],
+          "support_z": 0.0,
+          "visual_z": 0.0,
+          "support_geom_id": 149
+        },
+        {
+          "xy": [
+            0.0,
+            -0.05
+          ],
+          "support_z": 0.0,
+          "visual_z": 0.0,
+          "support_geom_id": 149
+        }
+      ],
+      "scope": "five floor rays within 0.05m of spawn; starts 0.25m above floor",
+      "limitations": "Not a full footprint, route, mesh convex-hull or dynamics validation",
+      "dynamic_smoke_tested": false
+    }
+  },
+  "verification": {
+    "title": "Sunset Beach",
+    "validation_scope": "structure_and_hashes",
+    "ok": true,
+    "kind": "map",
+    "schema": "kk-scene-package/2",
+    "id": "beach",
+    "file_count": 68,
+    "expanded_bytes": 23231113,
+    "capability_check": "checked",
+    "archive": "C:\\Users\\clayt\\Documents\\Jumper Crab\\Ready to Upload\\beach.map",
+    "sha256": "fc4b2b04b71e8c78c32b2ffded3a2cb6732ddecab4b5692d871c2d2c59c90801",
+    "archive_bytes": 9604350,
+    "native_mujoco": {
+      "passed": true,
+      "version": "3.17.0",
+      "models": [
+        {
+          "entry": "robot+scene.xml",
+          "bodies": 43,
+          "joints": 23,
+          "actuators": 0,
+          "geoms": 150
+        }
+      ],
+      "composition": {
+        "passed": true,
+        "schema": "kk-scene-package/2",
+        "map_id": "beach",
+        "robot_skin_id": "jumper-original",
+        "platform_id": "jumper",
+        "robot_joints": 23,
+        "combined_joints": 23,
+        "combined_geoms": 150,
+        "spawn_applied": true,
+        "spawn": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "yaw": 0
+        },
+        "preview_pose_applied": true,
+        "spawn_support": {
+          "passed": true,
+          "tolerance_m": 0.03,
+          "samples": [
+            {
+              "xy": [
+                0.0,
+                0.0
+              ],
+              "support_z": 0.0,
+              "visual_z": 0.0,
+              "support_geom_id": 149
+            },
+            {
+              "xy": [
+                0.05,
+                0.0
+              ],
+              "support_z": 0.0,
+              "visual_z": 0.0,
+              "support_geom_id": 149
+            },
+            {
+              "xy": [
+                -0.05,
+                0.0
+              ],
+              "support_z": 0.0,
+              "visual_z": 0.0,
+              "support_geom_id": 149
+            },
+            {
+              "xy": [
+                0.0,
+                0.05
+              ],
+              "support_z": 0.0,
+              "visual_z": 0.0,
+              "support_geom_id": 149
+            },
+            {
+              "xy": [
+                0.0,
+                -0.05
+              ],
+              "support_z": 0.0,
+              "visual_z": 0.0,
+              "support_geom_id": 149
+            }
+          ],
+          "scope": "five floor rays within 0.05m of spawn; starts 0.25m above floor",
+          "limitations": "Not a full footprint, route, mesh convex-hull or dynamics validation",
+          "dynamic_smoke_tested": false
+        },
+        "severe_spawn_contacts": 0,
+        "minimum_non_ground_contact_distance_m": null,
+        "physical_dynamics_validated": false,
+        "physical_fit_tested": false
+      },
+      "scope": "compile_and_forward_only",
+      "physical_dynamics_validated": false
+    }
+  },
+  "composition": {
+    "passed": true,
+    "schema": "kk-scene-package/2",
+    "map_id": "beach",
+    "robot_skin_id": "jumper-original",
+    "platform_id": "jumper",
+    "robot_joints": 23,
+    "combined_joints": 23,
+    "combined_geoms": 150,
+    "spawn_applied": true,
+    "spawn": {
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0
+    },
+    "preview_pose_applied": true,
+    "spawn_support": {
+      "passed": true,
+      "tolerance_m": 0.03,
+      "samples": [
+        {
+          "xy": [
+            0.0,
+            0.0
+          ],
+          "support_z": 0.0,
+          "visual_z": 0.0,
+          "support_geom_id": 149
+        },
+        {
+          "xy": [
+            0.05,
+            0.0
+          ],
+          "support_z": 0.0,
+          "visual_z": 0.0,
+          "support_geom_id": 149
+        },
+        {
+          "xy": [
+            -0.05,
+            0.0
+          ],
+          "support_z": 0.0,
+          "visual_z": 0.0,
+          "support_geom_id": 149
+        },
+        {
+          "xy": [
+            0.0,
+            0.05
+          ],
+          "support_z": 0.0,
+          "visual_z": 0.0,
+          "support_geom_id": 149
+        },
+        {
+          "xy": [
+            0.0,
+            -0.05
+          ],
+          "support_z": 0.0,
+          "visual_z": 0.0,
+          "support_geom_id": 149
+        }
+      ],
+      "scope": "five floor rays within 0.05m of spawn; starts 0.25m above floor",
+      "limitations": "Not a full footprint, route, mesh convex-hull or dynamics validation",
+      "dynamic_smoke_tested": false
+    },
+    "severe_spawn_contacts": 0,
+    "minimum_non_ground_contact_distance_m": null,
+    "physical_dynamics_validated": false,
+    "physical_fit_tested": false
+  },
+  "design_commit": "918d192857fcea1678c2a40b339501004a94d838",
+  "source_scene_sha256": "99e04495de6ff29671b34e769b1d92fa6993029d1fb44452a414a8e09fb2f768",
+  "native_preview_only": true,
+  "web_acceptance_tested": false
+}

@@ -1,0 +1,170 @@
+{
+  "schema": "kk-scene-package/1",
+  "id": "beach",
+  "description": "low warm sun over damp sand, dusk sky, long shadows",
+  "tags": [
+    "presentation",
+    "outdoor"
+  ],
+  "use": "watching",
+  "exportedBy": {
+    "repo": "KingKongRobotics/jumper",
+    "commit": "178d27e7006626773916e7585bda5202ba9df86f",
+    "tool": "scenes/tools/export_web_scene.py",
+    "mujocoAtLeast": "3.2",
+    "videoDressingSourceSha256": "96ca53fce9c1e1a5e1610ead7a5c19c69c8ac12c7cbed1750541c9aca88a86d5"
+  },
+  "world": {
+    "file": "scene.xml",
+    "terrainType": "plane",
+    "ground": {
+      "geom": "terrain",
+      "friction": [
+        1.0,
+        0.005,
+        0.0001
+      ],
+      "priority": 0,
+      "outranksFeet": false,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "condim": 3
+    },
+    "counts": {
+      "geoms": 68,
+      "lights": 1,
+      "textures": 3,
+      "materials": 4
+    },
+    "decorativeGeoms": [
+      "prop_sea",
+      "prop_wet_sand",
+      "prop_foam0",
+      "prop_foam1",
+      "prop_foam2",
+      "prop_castle_base",
+      "prop_castle_keep",
+      "prop_castle_keep_top",
+      "prop_castle_tower0",
+      "prop_castle_cap0",
+      "prop_castle_tower1",
+      "prop_castle_cap1",
+      "prop_castle_tower2",
+      "prop_castle_cap2",
+      "prop_castle_tower3",
+      "prop_castle_cap3",
+      "prop_flag_pole",
+      "prop_flag",
+      "prop_bucket",
+      "prop_bucket_rim",
+      "prop_spade_handle",
+      "prop_spade_blade",
+      "prop_ball",
+      "prop_umbrella_pole",
+      "prop_umbrella_canopy",
+      "prop_umbrella_trim",
+      "prop_umbrella_hub",
+      "prop_umbrella_tip",
+      "prop_umbrella_rib0",
+      "prop_umbrella_rib1",
+      "prop_umbrella_rib2",
+      "prop_umbrella_rib3",
+      "prop_umbrella_rib4",
+      "prop_umbrella_rib5",
+      "prop_umbrella_rib6",
+      "prop_umbrella_rib7",
+      "prop_towel0",
+      "prop_towel1",
+      "prop_towel2",
+      "prop_trunk0",
+      "prop_trunk1",
+      "prop_trunk2",
+      "prop_trunk3",
+      "prop_trunk4",
+      "prop_trunk5",
+      "prop_frond0",
+      "prop_frond1",
+      "prop_frond2",
+      "prop_frond3",
+      "prop_frond4",
+      "prop_frond5",
+      "prop_frond6",
+      "prop_frond7",
+      "prop_coconut0",
+      "prop_coconut1",
+      "prop_coconut2",
+      "prop_surfboard",
+      "prop_surfboard_stripe",
+      "prop_star0",
+      "prop_star1",
+      "prop_star2",
+      "prop_star3",
+      "prop_star4",
+      "prop_shell0",
+      "prop_shell1",
+      "prop_shell2",
+      "prop_shell3"
+    ],
+    "collidingGeoms": []
+  },
+  "props": [],
+  "rules": {
+    "decorativeGeomsAreNonColliding": "All 67 geoms in decorativeGeoms have contype=0 and conaffinity=0 and must keep them. They are a look; a goalpost that becomes solid is an invisible wall around the robot and looks identical to one that has not."
+  },
+  "files": {
+    "assets\\beach_ball_back.png": {
+      "bytes": 1544,
+      "sha256": "8b49eb97c6eee95cb5a5e74c1194201e421887a89cfb2c1c156411abf633837c"
+    },
+    "assets\\beach_ball_down.png": {
+      "bytes": 1355,
+      "sha256": "f88441fe758fe1eb623b85617bab77a3845c77975d4bcf4b18ba65f5629e7505"
+    },
+    "assets\\beach_ball_front.png": {
+      "bytes": 1556,
+      "sha256": "b7561d550eba006b4bb792dc71428b78af6240999d4c28055bfdc9fdd3cc1fb6"
+    },
+    "assets\\beach_ball_left.png": {
+      "bytes": 1515,
+      "sha256": "b1ca5dbeeb7ffb2d9d424a000edee516d1a6b16a1b480b73bd6beb6fc2df1e28"
+    },
+    "assets\\beach_ball_right.png": {
+      "bytes": 1487,
+      "sha256": "677206fa3235b24d064b487b95f515d2c1e091ffd7d58abde9dbac7ad72f76df"
+    },
+    "assets\\beach_ball_up.png": {
+      "bytes": 1363,
+      "sha256": "eae1a0731f0dd5028c07057f3a2ffd89694bfcabc35fdbdb1c5444b5c8ab0d9f"
+    },
+    "assets\\sky_back.png": {
+      "bytes": 44351,
+      "sha256": "faa3668521ed7af61524365f1498d159fe851aa25ed27d0877c8b29953042015"
+    },
+    "assets\\sky_down.png": {
+      "bytes": 37728,
+      "sha256": "f5074b5342f13a94e1bfee20f6eb60b2bf0c668462ac608c571f8268724b59e4"
+    },
+    "assets\\sky_front.png": {
+      "bytes": 75789,
+      "sha256": "eb312fbac4999e8bd21ed46c2604e0b63537995474e42ac9621cdf2c3925983f"
+    },
+    "assets\\sky_left.png": {
+      "bytes": 84840,
+      "sha256": "1f15e0a7d48e8bc2050ab93c82479a313f26cdb3fe4d90203e8beecf840b601e"
+    },
+    "assets\\sky_right.png": {
+      "bytes": 39552,
+      "sha256": "fe4177aea17b3553085c632f6025e3b438b60269a47b1bc96acf62fed541022c"
+    },
+    "assets\\sky_up.png": {
+      "bytes": 37002,
+      "sha256": "9915f4452bcc38aa7f4374e5cfa3150c99cd4652eaf438871ef9227fb91866e3"
+    },
+    "scene.xml": {
+      "bytes": 13943,
+      "sha256": "99e04495de6ff29671b34e769b1d92fa6993029d1fb44452a414a8e09fb2f768"
+    }
+  }
+}

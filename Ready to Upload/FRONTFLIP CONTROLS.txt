@@ -1,0 +1,43 @@
+FRONTFLIP APP - REGULAR JUMPER CONTROLS + FRONTFLIP
+
+Start in the normal walking/posture mode. All twelve original tasks and their
+controls are included: locomotion, jump, left/right claw, four dances and
+four gestures. Frontflip is the added thirteenth task.
+
+FRONTFLIP
+Stop moving in locomotion mode, then:
+  Keyboard: hold Ctrl and press Space.
+  Gamepad:  hold Menu and press A.
+Release the keys/buttons after selecting it. The motion returns to locomotion
+automatically. Repeating the same shortcut during the motion stops it early.
+
+REGULAR CONTROLS
+W/S or Up/Down: walk forward/back
+A/D or Left/Right: sidestep
+J/L: turn; H/semicolon: twist
+I/K: pitch; U/O: roll; N/M: height
+Esc: release the current movement/posture controls
+Space alone or gamepad A alone: original jump
+V / LB: left claw; B / RB: right claw
+1-4 or D-pad directions: gestures
+Ctrl+1-4 or Menu+D-pad: dances
+
+The English and Chinese manuals inside the app give the complete per-task
+controls, including claw arm presets, triggers and posture stick layers.
+
+CHECKED
+Both new shortcuts select frontflip; bare A/Space retain jump. Browser and
+Windows controller references agree. Only frontflip has a tilt exemption;
+other modes retain the original 50-degree controller limit. Both shortcuts
+complete the clip and return to locomotion in controller checks.
+
+A seed-0 physics diagnostic performed the full flip and upright landing,
+returned to locomotion at 6.35 seconds, and walked afterward. It used the
+original posture contact physics and omitted only the world's fell_over
+termination. Stock Train currently resets the world during the intentional
+flip because that separate detector does not honor the mode exemption.
+The app controller's other safety rules stayed enabled throughout.
+
+Browser/simulator package only. Target website import and physical hardware
+have not been tested. The previous flip-only app remains at
+out/frontflip-upload/frontflip.app in the project.

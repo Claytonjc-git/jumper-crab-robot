@@ -1,0 +1,1406 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+  model_revision: V1.6-1
+  ros_package_version: 1.0.0
+  Revision metadata only; robot names and mesh paths remain version-independent.
+-->
+<robot name="jumper">
+  <!--Kinematics and geometry export. Native MJCF retains actuator and contact semantics.-->
+  <mujoco>
+    <compiler discardvisual="false" fusestatic="false" strippath="false" balanceinertia="false" />
+  </mujoco>
+  <link name="world" />
+  <link name="base_link">
+    <inertial>
+      <origin xyz="-0.0039907423955154444 -9.0680663211056696e-06 0.018411365784056891" rpy="0 -0 0" />
+      <mass value="0.88600606427772599" />
+      <inertia ixx="0.0020032365223942002" iyy="0.0024185854288228609" izz="0.0041293366448748314" ixy="-4.0903844235698842e-07" ixz="3.8851760624097647e-05" iyz="1.391182633206594e-07" />
+    </inertial>
+    <visual name="base_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/base_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_000" />
+    </visual>
+    <visual name="base_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/base_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="base_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/base_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <material name="shellflow_material_000">
+    <color rgba="0 0 0 1" />
+  </material>
+  <material name="shellflow_material_001">
+    <color rgba="0.5 0.5 0.5 1" />
+  </material>
+  <joint name="floating_base" type="floating">
+    <parent link="world" />
+    <child link="base_link" />
+    <origin xyz="0 0 0" rpy="0 -0 0" />
+  </joint>
+  <link name="upper_shell_link">
+    <inertial>
+      <origin xyz="0.00031222330848305402 2.09866525747957e-05 0.0238147936447929" rpy="0 -0 0" />
+      <mass value="0.102436653" />
+      <inertia ixx="0.00030383185793894001" iyy="0.00034556886444822999" izz="0.00062213464010877999" ixy="-3.9732042379999999e-08" ixz="9.6541805799999999e-09" iyz="1.5191343559999999e-05" />
+    </inertial>
+    <visual name="upper_shell_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/upper_shell_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="upper_shell_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/upper_shell_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+    <visual name="shellflow_upper_0">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/upper_shell_0.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_002" />
+    </visual>
+  </link>
+  <material name="shellflow_material_002">
+    <color rgba="0.84999999999999998 0.080000000000000002 0.050000000000000003 1" />
+  </material>
+  <link name="display_module_link">
+    <inertial>
+      <origin xyz="-0.0019388261308095919 4.1371000222193977e-06 -0.00078539859871481902" rpy="0 -0 0" />
+      <mass value="0.022887296181573102" />
+      <inertia ixx="1.9432284128227629e-05" iyy="2.4431603379998188e-06" izz="1.859607341932798e-05" ixy="1.557232795190218e-09" ixz="1.126757797308862e-06" iyz="6.786302212073578e-10" />
+    </inertial>
+    <visual name="display_module_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/display_module_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_000" />
+    </visual>
+    <visual name="display_module_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/display_module_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="display_module_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/display_module_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="tof_sensor_link">
+    <inertial>
+      <origin xyz="-0.00120005125846807 -0.00420569303897903 -2.1989725824025902e-05" rpy="0 -0 0" />
+      <mass value="0.00148539236" />
+      <inertia ixx="3.198916871e-08" iyy="1.0110046279999999e-07" izz="7.9468170429999997e-08" ixy="3.625924e-11" ixz="1.4499240000000001e-11" iyz="1.4583569999999999e-11" />
+    </inertial>
+    <visual name="tof_sensor_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/tof_sensor_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_000" />
+    </visual>
+    <visual name="tof_sensor_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/tof_sensor_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="tof_sensor_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/tof_sensor_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="camera_link">
+    <inertial>
+      <origin xyz="-0.0056717158536398497 -0.0064605718701068199 4.8117129472710604e-06" rpy="0 -0 0" />
+      <mass value="0.0020195611800000002" />
+      <inertia ixx="5.1708388870000001e-08" iyy="6.6735358300000003e-07" izz="6.2038952240000001e-07" ixy="3.8918806799999997e-09" ixz="-6.3076539999999997e-11" iyz="-2.8986000000000002e-12" />
+    </inertial>
+    <visual name="camera_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/camera_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_000" />
+    </visual>
+    <visual name="camera_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/camera_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="camera_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/camera_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="LF_shoulder_link">
+    <inertial>
+      <origin xyz="4.66902243904527e-05 0.00039284634133000102 -0.0058667997809643199" rpy="0 -0 0" />
+      <mass value="0.047816039329999997" />
+      <inertia ixx="1.346010098e-05" iyy="1.3715604839999999e-05" izz="4.0536688920000001e-06" ixy="6.9430702100000004e-09" ixz="4.057892718e-07" iyz="-6.1627662000000006e-08" />
+    </inertial>
+    <visual name="LF_shoulder_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_shoulder_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_002" />
+    </visual>
+    <visual name="LF_shoulder_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_shoulder_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="LF_shoulder_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_shoulder_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="LF_upper_arm_link">
+    <inertial>
+      <origin xyz="-0.00085677684347371097 0.013042319200816801 -0.00051673986898990499" rpy="0 -0 0" />
+      <mass value="0.060259598759999998" />
+      <inertia ixx="8.2651864159999999e-06" iyy="2.7521390110000001e-05" izz="3.0700384500000003e-05" ixy="-1.521622962e-06" ixz="8.2667773860000001e-07" iyz="1.028171953e-07" />
+    </inertial>
+    <visual name="LF_upper_arm_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_upper_arm_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_002" />
+    </visual>
+    <visual name="LF_upper_arm_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_upper_arm_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="LF_upper_arm_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_upper_arm_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="LF_forearm_link">
+    <inertial>
+      <origin xyz="-0.00065686870715531099 0.00954327199306583 0.00050635190036370898" rpy="0 -0 0" />
+      <mass value="0.058519422670000001" />
+      <inertia ixx="6.7691560640000002e-06" iyy="2.2960749060000002e-05" izz="2.438638576e-05" ixy="1.0767009159999999e-07" ixz="-5.4945395989999998e-07" iyz="4.44444446e-09" />
+    </inertial>
+    <visual name="LF_forearm_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_forearm_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_003" />
+    </visual>
+    <visual name="LF_forearm_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_forearm_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="LF_forearm_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_forearm_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <material name="shellflow_material_003">
+    <color rgba="0.68000000000000005 0.69999999999999996 0.71999999999999997 1" />
+  </material>
+  <link name="LF_palm_link">
+    <inertial>
+      <origin xyz="0.00079083889620042104 0.027372190468124499 0.0032502548760984999" rpy="0 -0 0" />
+      <mass value="0.094137196559999997" />
+      <inertia ixx="2.726064675842e-05" iyy="0.00013570953377956999" izz="0.00014026792925965001" ixy="-3.9215611525e-07" ixz="-1.5169075243129999e-05" iyz="2.7273372559999999e-08" />
+    </inertial>
+    <visual name="LF_palm_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_palm_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_002" />
+    </visual>
+    <visual name="LF_palm_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_palm_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="LF_palm_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_palm_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="LF_palm_pad_f_link">
+    <inertial>
+      <origin xyz="0.0075788629466900202 -0.030559236643108501 0.0111586236401904" rpy="0 -0 0" />
+      <mass value="0.00192627128" />
+      <inertia ixx="5.2136483800000003e-08" iyy="4.3614310567999998e-07" izz="4.0553625871000001e-07" ixy="-4.95207557e-08" ixz="1.0355747496e-07" iyz="1.296003765e-08" />
+    </inertial>
+    <visual name="LF_palm_pad_f_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_palm_pad_f_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_004" />
+    </visual>
+    <visual name="LF_palm_pad_f_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_palm_pad_f_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="LF_palm_pad_f_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_palm_pad_f_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <material name="shellflow_material_004">
+    <color rgba="0.81599999999999995 0.81999999999999995 0.80400000000000005 1" />
+  </material>
+  <link name="LF_palm_pad_b_link">
+    <inertial>
+      <origin xyz="-0.0075823547386945304 -0.030584032753763899 0.0111664149676275" rpy="0 -0 0" />
+      <mass value="0.0019239500300000001" />
+      <inertia ixx="5.2078688060000001e-08" iyy="4.3717596831000002e-07" izz="4.0659211571e-07" ixy="4.9464452820000001e-08" ixz="1.035927752e-07" iyz="-1.2928265980000001e-08" />
+    </inertial>
+    <visual name="LF_palm_pad_b_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_palm_pad_b_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_004" />
+    </visual>
+    <visual name="LF_palm_pad_b_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_palm_pad_b_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="LF_palm_pad_b_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_palm_pad_b_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="LF_finger_link">
+    <inertial>
+      <origin xyz="-0.0010453164292251601 0.011322375034942 -0.0027865985611266199" rpy="0 -0 0" />
+      <mass value="0.058854125100000002" />
+      <inertia ixx="8.2619881892600002e-06" iyy="3.9107898256559998e-05" izz="4.0740431191290003e-05" ixy="-1.4926414540000001e-07" ixz="5.6114634784600001e-06" iyz="4.0696748840000002e-08" />
+    </inertial>
+    <visual name="LF_finger_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_finger_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_002" />
+    </visual>
+    <visual name="LF_finger_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_finger_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="LF_finger_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_finger_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="LF_finger_tip_link">
+    <inertial>
+      <origin xyz="0.00095172198048731904 -0.0091876764419107602 -0.0040012882452475501" rpy="0 -0 0" />
+      <mass value="0.0020329877799999999" />
+      <inertia ixx="7.9482022130000007e-08" iyy="5.5200242950000002e-08" izz="9.8615908989999997e-08" ixy="8.7743400000000004e-12" ixz="-1.8076341399999999e-08" iyz="-3.6680000000000001e-13" />
+    </inertial>
+    <visual name="LF_finger_tip_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_finger_tip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_004" />
+    </visual>
+    <visual name="LF_finger_tip_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_finger_tip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="LF_finger_tip_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_finger_tip_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="LF_finger_grip_insert_link">
+    <inertial>
+      <origin xyz="-2.7859150064521399e-05 -0.0045410208083924196 -0.00089984651259972204" rpy="0 -0 0" />
+      <mass value="0.01160128537" />
+      <inertia ixx="6.4493499965000003e-07" iyy="5.3310062861399997e-06" izz="5.7082820013999997e-06" ixy="2.3292641380000001e-08" ixz="-5.7111653516000005e-07" iyz="2.7021718800000001e-09" />
+    </inertial>
+    <visual name="LF_finger_grip_insert_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_finger_grip_insert_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_004" />
+    </visual>
+    <visual name="LF_finger_grip_insert_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_finger_grip_insert_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="LF_finger_grip_insert_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_finger_grip_insert_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="LF_palm_grip_insert_link">
+    <inertial>
+      <origin xyz="2.67492518880308e-05 -0.0041125983696999003 0.0011950476620263401" rpy="0 -0 0" />
+      <mass value="0.01142410586" />
+      <inertia ixx="7.5463864896999995e-07" iyy="5.5405772305999997e-06" izz="5.7919160331499998e-06" ixy="3.5363790999999998e-10" ixz="9.2522920624999999e-07" iyz="-4.3836348000000002e-10" />
+    </inertial>
+    <visual name="LF_palm_grip_insert_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_palm_grip_insert_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_004" />
+    </visual>
+    <visual name="LF_palm_grip_insert_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_palm_grip_insert_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="LF_palm_grip_insert_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LF_palm_grip_insert_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="RF_shoulder_link">
+    <inertial>
+      <origin xyz="-4.6690281008260303e-05 -0.00039284635607317298 -0.0058667998321412602" rpy="0 -0 0" />
+      <mass value="0.047816039329999997" />
+      <inertia ixx="1.34601009774e-05" iyy="1.3715604840680001e-05" izz="4.05366889151e-06" ixy="6.9430702100000004e-09" ixz="-4.0578927175000001e-07" iyz="6.1627662000000006e-08" />
+    </inertial>
+    <visual name="RF_shoulder_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_shoulder_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_002" />
+    </visual>
+    <visual name="RF_shoulder_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_shoulder_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="RF_shoulder_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_shoulder_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="RF_upper_arm_link">
+    <inertial>
+      <origin xyz="0.00075838399426990399 -0.0130423308399382 -0.00051674164932323204" rpy="0 -0 0" />
+      <mass value="0.06049388159" />
+      <inertia ixx="8.3110196696400001e-06" iyy="2.7532386509870001e-05" izz="3.0756290247160001e-05" ixy="-1.5185602909800001e-06" ixz="-8.2674505537999997e-07" iyz="-1.0629372458e-07" />
+    </inertial>
+    <visual name="RF_upper_arm_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_upper_arm_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_002" />
+    </visual>
+    <visual name="RF_upper_arm_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_upper_arm_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="RF_upper_arm_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_upper_arm_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="RF_forearm_link">
+    <inertial>
+      <origin xyz="0.00065686870680351005 -0.0095432719930658699 0.00050635190040277203" rpy="0 -0 0" />
+      <mass value="0.058519422670000001" />
+      <inertia ixx="6.7691560639800001e-06" iyy="2.296074905504e-05" izz="2.438638575505e-05" ixy="1.0767009155e-07" ixz="5.4945395990999995e-07" iyz="-4.44444446e-09" />
+    </inertial>
+    <visual name="RF_forearm_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_forearm_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_003" />
+    </visual>
+    <visual name="RF_forearm_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_forearm_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="RF_forearm_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_forearm_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="RF_palm_link">
+    <inertial>
+      <origin xyz="-0.00079084146526187105 -0.027372088298613699 0.0032502519042704901" rpy="0 -0 0" />
+      <mass value="0.094137196559999997" />
+      <inertia ixx="2.726064675842e-05" iyy="0.00013570953377956999" izz="0.00014026792925965001" ixy="-3.9215611525e-07" ixz="1.5169075243129999e-05" iyz="-2.7273372559999999e-08" />
+    </inertial>
+    <visual name="RF_palm_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_palm_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_002" />
+    </visual>
+    <visual name="RF_palm_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_palm_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="RF_palm_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_palm_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="RF_palm_pad_f_link">
+    <inertial>
+      <origin xyz="0.0075823544669694496 0.030584033457945602 0.0111664151917211" rpy="0 -0 0" />
+      <mass value="0.0019239500300000001" />
+      <inertia ixx="5.2078688060000001e-08" iyy="4.3717596831000002e-07" izz="4.0659211571e-07" ixy="4.9464452820000001e-08" ixz="-1.035927752e-07" iyz="1.2928265980000001e-08" />
+    </inertial>
+    <visual name="RF_palm_pad_f_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_palm_pad_f_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_004" />
+    </visual>
+    <visual name="RF_palm_pad_f_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_palm_pad_f_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="RF_palm_pad_f_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_palm_pad_f_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="RF_palm_pad_b_link">
+    <inertial>
+      <origin xyz="-0.0075788627731807404 0.030559236451292299 0.0111586236601556" rpy="0 -0 0" />
+      <mass value="0.00192627128" />
+      <inertia ixx="5.2136483800000003e-08" iyy="4.3614310567999998e-07" izz="4.0553625871000001e-07" ixy="-4.95207557e-08" ixz="-1.0355747496e-07" iyz="-1.296003765e-08" />
+    </inertial>
+    <visual name="RF_palm_pad_b_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_palm_pad_b_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_004" />
+    </visual>
+    <visual name="RF_palm_pad_b_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_palm_pad_b_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="RF_palm_pad_b_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_palm_pad_b_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="RF_palm_grip_insert_link">
+    <inertial>
+      <origin xyz="-2.6749665518952001e-05 0.0041126733751624704 0.0011950678326682" rpy="0 -0 0" />
+      <mass value="0.01142410586" />
+      <inertia ixx="7.5463864896999995e-07" iyy="5.5405772305999997e-06" izz="5.7919160331499998e-06" ixy="3.5363790999999998e-10" ixz="-9.2522920624999999e-07" iyz="4.3836348000000002e-10" />
+    </inertial>
+    <visual name="RF_palm_grip_insert_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_palm_grip_insert_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_004" />
+    </visual>
+    <visual name="RF_palm_grip_insert_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_palm_grip_insert_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="RF_palm_grip_insert_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_palm_grip_insert_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="RF_finger_link">
+    <inertial>
+      <origin xyz="0.0010453164292377999 -0.011322375034949201 -0.0027865985611273398" rpy="0 -0 0" />
+      <mass value="0.058854125100000002" />
+      <inertia ixx="8.2619881892600002e-06" iyy="3.9107898256559998e-05" izz="4.0740431191290003e-05" ixy="-1.4926414540000001e-07" ixz="-5.6114634784600001e-06" iyz="-4.0696748840000002e-08" />
+    </inertial>
+    <visual name="RF_finger_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_finger_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_002" />
+    </visual>
+    <visual name="RF_finger_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_finger_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="RF_finger_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_finger_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="RF_finger_grip_insert_link">
+    <inertial>
+      <origin xyz="2.7859150064479799e-05 0.0045410208083924196 -0.00089984651259974698" rpy="0 -0 0" />
+      <mass value="0.01160128537" />
+      <inertia ixx="6.4493499965000003e-07" iyy="5.3310062861399997e-06" izz="5.7082820013999997e-06" ixy="2.3292641380000001e-08" ixz="5.7111653516000005e-07" iyz="-2.7021718800000001e-09" />
+    </inertial>
+    <visual name="RF_finger_grip_insert_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_finger_grip_insert_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_004" />
+    </visual>
+    <visual name="RF_finger_grip_insert_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_finger_grip_insert_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="RF_finger_grip_insert_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_finger_grip_insert_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="RF_finger_tip_link">
+    <inertial>
+      <origin xyz="-0.00015172198711831101 0.0091876764378277 -0.0040013464906230797" rpy="0 -0 0" />
+      <mass value="0.0020329877799999999" />
+      <inertia ixx="7.9482022130000007e-08" iyy="5.5200242950000002e-08" izz="9.8615908989999997e-08" ixy="8.7743400000000004e-12" ixz="1.8076341399999999e-08" iyz="3.6680000000000001e-13" />
+    </inertial>
+    <visual name="RF_finger_tip_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_finger_tip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_004" />
+    </visual>
+    <visual name="RF_finger_tip_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_finger_tip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="RF_finger_tip_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RF_finger_tip_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="LM_hip_link">
+    <inertial>
+      <origin xyz="0.00015077172606339599 0.012357290478632999 -0.010017912945096101" rpy="0 -0 0" />
+      <mass value="0.065149094140000002" />
+      <inertia ixx="2.128971545324e-05" iyy="3.971841660371e-05" izz="3.1048407098910001e-05" ixy="1.5762379732000001e-07" ixz="1.203876938038e-05" iyz="-1.2388880365000001e-07" />
+    </inertial>
+    <visual name="LM_hip_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LM_hip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_002" />
+    </visual>
+    <visual name="LM_hip_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LM_hip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="LM_hip_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LM_hip_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="LM_thigh_link">
+    <inertial>
+      <origin xyz="-0.00065685119887690297 0.0095432731991219304 0.00050635190106601698" rpy="0 -0 0" />
+      <mass value="0.058519422670000001" />
+      <inertia ixx="6.7691564590999999e-06" iyy="2.2960748659920001e-05" izz="2.4386385755039999e-05" ixy="1.0769979658000001e-07" ixz="-5.4945395176000002e-07" iyz="4.4454524800000001e-09" />
+    </inertial>
+    <visual name="LM_thigh_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LM_thigh_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_003" />
+    </visual>
+    <visual name="LM_thigh_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LM_thigh_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="LM_thigh_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LM_thigh_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="LM_calf_link">
+    <inertial>
+      <origin xyz="0.00039745982733346098 0.023317042394358899 0.0025493946314412998" rpy="0 -0 0" />
+      <mass value="0.077680080139999996" />
+      <inertia ixx="1.4177431857100001e-05" iyy="8.8405868202220001e-05" izz="9.5444122042179994e-05" ixy="-5.6026076012000002e-07" ixz="-5.19702881351e-06" iyz="-6.7669848959999999e-08" />
+    </inertial>
+    <visual name="LM_calf_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LM_calf_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_002" />
+    </visual>
+    <visual name="LM_calf_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LM_calf_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="LM_calf_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LM_calf_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="LM_foot_tip_link">
+    <inertial>
+      <origin xyz="9.5549238671079798e-07 -0.0124583714932993 -0.0040541245637491403" rpy="0 -0 0" />
+      <mass value="0.0063770509200000002" />
+      <inertia ixx="5.5075611773000003e-07" iyy="3.0117377538999999e-07" izz="5.8027786446000002e-07" ixy="1.108601e-11" ixz="-3.3072997829999998e-08" iyz="2.8826180000000001e-11" />
+    </inertial>
+    <visual name="LM_foot_tip_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LM_foot_tip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_004" />
+    </visual>
+    <visual name="LM_foot_tip_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LM_foot_tip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="LM_foot_tip_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LM_foot_tip_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="RM_hip_link">
+    <inertial>
+      <origin xyz="-0.00015073104815399 -0.012357303814340701 -0.010017932726550299" rpy="0 -0 0" />
+      <mass value="0.065149094140000002" />
+      <inertia ixx="2.128971487499e-05" iyy="3.9718417181970001e-05" izz="3.1048407098910001e-05" ixy="1.5758999029000001e-07" ixz="-1.203876960763e-05" iyz="1.238667188e-07" />
+    </inertial>
+    <visual name="RM_hip_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RM_hip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_002" />
+    </visual>
+    <visual name="RM_hip_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RM_hip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="RM_hip_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RM_hip_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="RM_thigh_link">
+    <inertial>
+      <origin xyz="0.00065686870566928105 -0.0095432719931440296 0.00050635190081368302" rpy="0 -0 0" />
+      <mass value="0.058519422670000001" />
+      <inertia ixx="6.7691560640100003e-06" iyy="2.2960749055009998e-05" izz="2.4386385755039999e-05" ixy="1.0767009348e-07" ixz="5.4945395990999995e-07" iyz="-4.4444445199999999e-09" />
+    </inertial>
+    <visual name="RM_thigh_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RM_thigh_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_003" />
+    </visual>
+    <visual name="RM_thigh_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RM_thigh_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="RM_thigh_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RM_thigh_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="RM_calf_link">
+    <inertial>
+      <origin xyz="-0.00039741622562804998 -0.0233170409860235 0.00254939222121537" rpy="0 -0 0" />
+      <mass value="0.077680080139999996" />
+      <inertia ixx="1.4177433912920001e-05" iyy="8.8405866146399996e-05" izz="9.5444122042179994e-05" ixy="-5.6039693049000003e-07" ixz="5.1970286893599998e-06" iyz="6.7679382789999998e-08" />
+    </inertial>
+    <visual name="RM_calf_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RM_calf_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_002" />
+    </visual>
+    <visual name="RM_calf_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RM_calf_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="RM_calf_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RM_calf_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="RM_foot_tip_link">
+    <inertial>
+      <origin xyz="-9.7834678822530898e-07 0.0124583714930654 -0.0040541245641121703" rpy="0 -0 0" />
+      <mass value="0.0063770509200000002" />
+      <inertia ixx="5.5075611768999996e-07" iyy="3.0117377543000001e-07" izz="5.8027786446000002e-07" ixy="1.154386e-11" ixz="3.3072997890000001e-08" iyz="-2.8765500000000001e-11" />
+    </inertial>
+    <visual name="RM_foot_tip_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RM_foot_tip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_004" />
+    </visual>
+    <visual name="RM_foot_tip_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RM_foot_tip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="RM_foot_tip_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RM_foot_tip_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="LR_hip_link">
+    <inertial>
+      <origin xyz="0.000150753785847668 0.012357303187591699 -0.0100179330271734" rpy="0 -0 0" />
+      <mass value="0.065149094140000002" />
+      <inertia ixx="2.128971545324e-05" iyy="3.971841660371e-05" izz="3.1048407098910001e-05" ixy="1.5762379729000001e-07" ixz="1.203876938038e-05" iyz="-1.2388880362000001e-07" />
+    </inertial>
+    <visual name="LR_hip_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LR_hip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_002" />
+    </visual>
+    <visual name="LR_hip_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LR_hip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="LR_hip_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LR_hip_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="LR_thigh_link">
+    <inertial>
+      <origin xyz="-0.00065685119889380395 0.0095432731991208896 0.00050635190106601698" rpy="0 -0 0" />
+      <mass value="0.058519422670000001" />
+      <inertia ixx="6.7691564590999999e-06" iyy="2.2960748659920001e-05" izz="2.4386385755039999e-05" ixy="1.0769979656e-07" ixz="-5.4945395176000002e-07" iyz="4.4454524800000001e-09" />
+    </inertial>
+    <visual name="LR_thigh_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LR_thigh_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_003" />
+    </visual>
+    <visual name="LR_thigh_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LR_thigh_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="LR_thigh_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LR_thigh_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="LR_calf_link">
+    <inertial>
+      <origin xyz="0.000397459756758006 0.023317042475835 0.0025493946342847601" rpy="0 -0 0" />
+      <mass value="0.077680080139999996" />
+      <inertia ixx="1.4177431857100001e-05" iyy="8.8405868202220001e-05" izz="9.5444122042179994e-05" ixy="-5.6026076024999999e-07" ixz="-5.19702881351e-06" iyz="-6.7669848970000003e-08" />
+    </inertial>
+    <visual name="LR_calf_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LR_calf_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_002" />
+    </visual>
+    <visual name="LR_calf_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LR_calf_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="LR_calf_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LR_calf_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="LR_foot_tip_link">
+    <inertial>
+      <origin xyz="9.5466263401455809e-07 -0.0124583718820005 -0.0040541245571159203" rpy="0 -0 0" />
+      <mass value="0.0063770509200000002" />
+      <inertia ixx="5.5075611773000003e-07" iyy="3.0117377538999999e-07" izz="5.8027786446000002e-07" ixy="1.108601e-11" ixz="-3.3072997829999998e-08" iyz="2.8826180000000001e-11" />
+    </inertial>
+    <visual name="LR_foot_tip_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LR_foot_tip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_004" />
+    </visual>
+    <visual name="LR_foot_tip_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LR_foot_tip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="LR_foot_tip_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/LR_foot_tip_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="RR_hip_link">
+    <inertial>
+      <origin xyz="-0.000150728797728435 -0.012357299577347601 -0.0100179320025135" rpy="0 -0 0" />
+      <mass value="0.065149094140000002" />
+      <inertia ixx="2.128971487499e-05" iyy="3.9718417181959999e-05" izz="3.1048407098910001e-05" ixy="1.5758999033e-07" ixz="-1.203876960763e-05" iyz="1.2386671883e-07" />
+    </inertial>
+    <visual name="RR_hip_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RR_hip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_002" />
+    </visual>
+    <visual name="RR_hip_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RR_hip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="RR_hip_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RR_hip_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="RR_thigh_link">
+    <inertial>
+      <origin xyz="0.00065686870564683102 -0.0095432719931455405 0.00050635190081367402" rpy="0 -0 0" />
+      <mass value="0.058519422670000001" />
+      <inertia ixx="6.7691560640100003e-06" iyy="2.2960749055009998e-05" izz="2.4386385755039999e-05" ixy="1.0767009352e-07" ixz="5.4945395990999995e-07" iyz="-4.4444445199999999e-09" />
+    </inertial>
+    <visual name="RR_thigh_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RR_thigh_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_003" />
+    </visual>
+    <visual name="RR_thigh_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RR_thigh_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="RR_thigh_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RR_thigh_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="RR_calf_link">
+    <inertial>
+      <origin xyz="-0.00039741713409927699 -0.023317042924625799 0.0025493946294154902" rpy="0 -0 0" />
+      <mass value="0.077680080139999996" />
+      <inertia ixx="1.4177433912920001e-05" iyy="8.8405866146399996e-05" izz="9.5444122042179994e-05" ixy="-5.6039693031000003e-07" ixz="5.1970286893599998e-06" iyz="6.7679382780000007e-08" />
+    </inertial>
+    <visual name="RR_calf_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RR_calf_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_002" />
+    </visual>
+    <visual name="RR_calf_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RR_calf_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="RR_calf_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RR_calf_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="RR_foot_tip_link">
+    <inertial>
+      <origin xyz="-9.7834675934216395e-07 0.0124583714930648 -0.00405412456411246" rpy="0 -0 0" />
+      <mass value="0.0063770509200000002" />
+      <inertia ixx="5.5075611768999996e-07" iyy="3.0117377543000001e-07" izz="5.8027786446000002e-07" ixy="1.154386e-11" ixz="3.3072997890000001e-08" iyz="-2.8765500000000001e-11" />
+    </inertial>
+    <visual name="RR_foot_tip_link_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RR_foot_tip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_004" />
+    </visual>
+    <visual name="RR_foot_tip_link_collision_visual">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RR_foot_tip_link.stl" scale="1 1 1" />
+      </geometry>
+      <material name="shellflow_material_001" />
+    </visual>
+    <collision name="RR_foot_tip_link_collision_collision">
+      <origin xyz="0 0 0" rpy="0 -0 0" />
+      <geometry>
+        <mesh filename="meshes/visual/RR_foot_tip_link.stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="upper_shell_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="upper_shell_link" />
+    <origin xyz="-0.0073137022775616196 0 0.031499999999999001" rpy="0 -0 0" />
+  </joint>
+  <joint name="display_module_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="display_module_link" />
+    <origin xyz="0.080271828191114405 1.01590834547417e-05 0.049523780131661303" rpy="0 -0 0" />
+  </joint>
+  <joint name="tof_sensor_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="tof_sensor_link" />
+    <origin xyz="0.090677981288683998 0 0.016845548168800399" rpy="0 -0 0" />
+  </joint>
+  <joint name="camera_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="camera_link" />
+    <origin xyz="0.091677981288683999 0.0141808968430935 0.016847582356009" rpy="0 -0 0" />
+  </joint>
+  <joint name="LF_J0_joint" type="revolute">
+    <parent link="base_link" />
+    <child link="LF_shoulder_link" />
+    <origin xyz="0.050676062237813999 0.061000896834653498 0.010699999999999999" rpy="0 -0 0" />
+    <axis xyz="0 0 1" />
+    <limit effort="1.5" velocity="42" lower="-2.75" upper="0.69999999999999996" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="LF_J1_joint" type="revolute">
+    <parent link="LF_shoulder_link" />
+    <child link="LF_upper_arm_link" />
+    <origin xyz="0 0.0063999999999999804 -0.031159999999999199" rpy="0 -0 0" />
+    <axis xyz="0 1 0" />
+    <limit effort="0.69999999999999996" velocity="42" lower="-4.75" upper="1.3999999999999999" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="LF_J2_joint" type="revolute">
+    <parent link="LF_upper_arm_link" />
+    <child link="LF_forearm_link" />
+    <origin xyz="0.00089999999999999998 0.047870000000000003 0.00011132" rpy="0 -0 0" />
+    <axis xyz="1 0 0" />
+    <limit effort="0.69999999999999996" velocity="42" lower="-2.2000000000000002" upper="1.6499999999999999" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="LF_J3_joint" type="revolute">
+    <parent link="LF_forearm_link" />
+    <child link="LF_palm_link" />
+    <origin xyz="-0.0011999999999999999 0.050000000000000003 0" rpy="0 -0 0" />
+    <axis xyz="1 0 0" />
+    <limit effort="0.69999999999999996" velocity="42" lower="-2.1000000000000001" upper="1.6499999999999999" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="LF_palm_pad_f_joint" type="fixed">
+    <parent link="LF_palm_link" />
+    <child link="LF_palm_pad_f_link" />
+    <origin xyz="0.0088030379323176793 0.14154616615003501 -0.00058832358217359901" rpy="0 -0 0" />
+  </joint>
+  <joint name="LF_palm_pad_b_joint" type="fixed">
+    <parent link="LF_palm_link" />
+    <child link="LF_palm_pad_b_link" />
+    <origin xyz="-0.0074020092384150804 0.14154551450289601 -0.000588169542919226" rpy="0 -0 0" />
+  </joint>
+  <joint name="LF_J4_joint" type="revolute">
+    <parent link="LF_palm_link" />
+    <child link="LF_finger_link" />
+    <origin xyz="0.0020999999999999999 0.037275000000000003 -0.011472" rpy="0 -0 0" />
+    <axis xyz="1 0 0" />
+    <limit effort="1.5" velocity="42" lower="-1.6000000000000001" upper="0.10000000000000001" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="LF_finger_tip_joint" type="fixed">
+    <parent link="LF_finger_link" />
+    <child link="LF_finger_tip_link" />
+    <origin xyz="-0.0022000000139140901 0.106219232837006 -0.00327707073319651" rpy="0 -0 0" />
+  </joint>
+  <joint name="LF_finger_grip_insert_joint" type="fixed">
+    <parent link="LF_finger_link" />
+    <child link="LF_finger_grip_insert_link" />
+    <origin xyz="-0.0017589298930495399 0.066749271504494001 -0.00277963143968999" rpy="0 -0 0" />
+  </joint>
+  <joint name="LF_palm_grip_insert_joint" type="fixed">
+    <parent link="LF_palm_link" />
+    <child link="LF_palm_grip_insert_link" />
+    <origin xyz="0.00040632 0.10443 0.0026781000000000001" rpy="0 -0 0" />
+  </joint>
+  <joint name="RF_J0_joint" type="revolute">
+    <parent link="base_link" />
+    <child link="RF_shoulder_link" />
+    <origin xyz="0.050675999999999999 -0.060998999999999998 0.010699999999999999" rpy="0 -0 0" />
+    <axis xyz="0 0 1" />
+    <limit effort="1.5" velocity="42" lower="-0.69999999999999996" upper="2.75" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="RF_J1_joint" type="revolute">
+    <parent link="RF_shoulder_link" />
+    <child link="RF_upper_arm_link" />
+    <origin xyz="0 -0.0063999999999999899 -0.031159999999999199" rpy="0 -0 0" />
+    <axis xyz="0 1 0" />
+    <limit effort="0.69999999999999996" velocity="42" lower="-4.75" upper="1.3999999999999999" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="RF_J2_joint" type="revolute">
+    <parent link="RF_upper_arm_link" />
+    <child link="RF_forearm_link" />
+    <origin xyz="-0.00089999999999851299 -0.047870003754959402 0.00011132418307255999" rpy="0 -0 0" />
+    <axis xyz="1 0 0" />
+    <limit effort="0.69999999999999996" velocity="42" lower="-1.6499999999999999" upper="2.1000000000000001" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="RF_J3_joint" type="revolute">
+    <parent link="RF_forearm_link" />
+    <child link="RF_palm_link" />
+    <origin xyz="0.00119999999218565 -0.050000000000000003 0" rpy="0 -0 0" />
+    <axis xyz="1 0 0" />
+    <limit effort="0.69999999999999996" velocity="42" lower="-1.6499999999999999" upper="2.1000000000000001" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="RF_palm_pad_f_joint" type="fixed">
+    <parent link="RF_palm_link" />
+    <child link="RF_palm_pad_f_link" />
+    <origin xyz="0.0074020092384160198 -0.14154551450289601 -0.00058816954291922101" rpy="0 -0 0" />
+  </joint>
+  <joint name="RF_palm_pad_b_joint" type="fixed">
+    <parent link="RF_palm_link" />
+    <child link="RF_palm_pad_b_link" />
+    <origin xyz="-0.0088030379323167408 -0.14154616615003601 -0.00058832358217359901" rpy="0 -0 0" />
+  </joint>
+  <joint name="RF_palm_grip_insert_joint" type="fixed">
+    <parent link="RF_palm_link" />
+    <child link="RF_palm_grip_insert_link" />
+    <origin xyz="-0.00040631652983733101 -0.104426781012235 0.0026781007949556799" rpy="0 -0 0" />
+  </joint>
+  <joint name="RF_J4_joint" type="revolute">
+    <parent link="RF_palm_link" />
+    <child link="RF_finger_link" />
+    <origin xyz="-0.0020999999921675898 -0.037274696638293602 -0.0114717821682261" rpy="0 -0 0" />
+    <axis xyz="1 0 0" />
+    <limit effort="1.5" velocity="42" lower="0.10000000000000001" upper="1.6000000000000001" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="RF_finger_grip_insert_joint" type="fixed">
+    <parent link="RF_finger_link" />
+    <child link="RF_finger_grip_insert_link" />
+    <origin xyz="0.0017589298930499901 -0.066749271504494098 -0.0027796314396899601" rpy="0 -0 0" />
+  </joint>
+  <joint name="RF_finger_tip_joint" type="fixed">
+    <parent link="RF_finger_link" />
+    <child link="RF_finger_tip_link" />
+    <origin xyz="0.00139999998599694 -0.106219232837006 -0.0032770125371402599" rpy="0 -0 0" />
+  </joint>
+  <joint name="LM_J0_joint" type="revolute">
+    <parent link="base_link" />
+    <child link="LM_hip_link" />
+    <origin xyz="-0.0073239000000000004 0.066501000000000005 0.00745" rpy="0 -0 0" />
+    <axis xyz="0 0 1" />
+    <limit effort="1.5" velocity="42" lower="-0.75" upper="1" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="LM_J1_joint" type="revolute">
+    <parent link="LM_hip_link" />
+    <child link="LM_thigh_link" />
+    <origin xyz="0.0011001029474882601 0.056129997981850303 -0.024930000000752899" rpy="0 -0 0" />
+    <axis xyz="1 0 0" />
+    <limit effort="0.69999999999999996" velocity="42" lower="-2.3999999999999999" upper="1.5" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="LM_J2_joint" type="revolute">
+    <parent link="LM_thigh_link" />
+    <child link="LM_calf_link" />
+    <origin xyz="-0.00119990827036384 0.050000002201430797 0" rpy="0 -0 0" />
+    <axis xyz="1 0 0" />
+    <limit effort="0.69999999999999996" velocity="42" lower="-2.3999999999999999" upper="1.8" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="LM_foot_tip_joint" type="fixed">
+    <parent link="LM_calf_link" />
+    <child link="LM_foot_tip_link" />
+    <origin xyz="0.00078931546968332897 0.120917401784297 0.0062403646132292" rpy="0 -0 0" />
+  </joint>
+  <joint name="RM_J0_joint" type="revolute">
+    <parent link="base_link" />
+    <child link="RM_hip_link" />
+    <origin xyz="-0.0073239000000000004 -0.066499000000000003 0.00745" rpy="0 -0 0" />
+    <axis xyz="0 0 1" />
+    <limit effort="1.5" velocity="42" lower="-1" upper="0.75" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="RM_J1_joint" type="revolute">
+    <parent link="RM_hip_link" />
+    <child link="RM_thigh_link" />
+    <origin xyz="-0.0010999999782865301 -0.056129999999869597 -0.024930000000752899" rpy="0 -0 0" />
+    <axis xyz="1 0 0" />
+    <limit effort="0.69999999999999996" velocity="42" lower="-1.5" upper="2.3999999999999999" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="RM_J2_joint" type="revolute">
+    <parent link="RM_thigh_link" />
+    <child link="RM_calf_link" />
+    <origin xyz="0.0011999999942243599 -0.050000000000142299 0" rpy="0 -0 0" />
+    <axis xyz="1 0 0" />
+    <limit effort="0.69999999999999996" velocity="42" lower="-1.8" upper="2.3999999999999999" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="RM_foot_tip_joint" type="fixed">
+    <parent link="RM_calf_link" />
+    <child link="RM_foot_tip_link" />
+    <origin xyz="-0.00078909364946892096 -0.120917403232075 0.0062403646132292" rpy="0 -0 0" />
+  </joint>
+  <joint name="LR_J0_joint" type="revolute">
+    <parent link="base_link" />
+    <child link="LR_hip_link" />
+    <origin xyz="-0.065323999999999993 0.055501000000000002 0.00745" rpy="0 -0 0" />
+    <axis xyz="0 0 1" />
+    <limit effort="1.5" velocity="42" lower="-0.59999999999999998" upper="2.75" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="LR_J1_joint" type="revolute">
+    <parent link="LR_hip_link" />
+    <child link="LR_thigh_link" />
+    <origin xyz="0.00110010294738903 0.056129997981852302 -0.024930000000752899" rpy="0 -0 0" />
+    <axis xyz="1 0 0" />
+    <limit effort="0.69999999999999996" velocity="42" lower="-2.3999999999999999" upper="1.6000000000000001" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="LR_J2_joint" type="revolute">
+    <parent link="LR_thigh_link" />
+    <child link="LR_calf_link" />
+    <origin xyz="-0.00119990827045224 0.050000002201428598 0" rpy="0 -0 0" />
+    <axis xyz="1 0 0" />
+    <limit effort="0.69999999999999996" velocity="42" lower="-2.3999999999999999" upper="1.8" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="LR_foot_tip_joint" type="fixed">
+    <parent link="LR_calf_link" />
+    <child link="LR_foot_tip_link" />
+    <origin xyz="0.00078931546931681497 0.12091740398572701 0.00624036461405019" rpy="0 -0 0" />
+  </joint>
+  <joint name="RR_J0_joint" type="revolute">
+    <parent link="base_link" />
+    <child link="RR_hip_link" />
+    <origin xyz="-0.065323937762204604 -0.055499103165328002 0.00745" rpy="0 -0 0" />
+    <axis xyz="0 0 1" />
+    <limit effort="1.5" velocity="42" lower="-2.75" upper="0.59999999999999998" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="RR_J1_joint" type="revolute">
+    <parent link="RR_hip_link" />
+    <child link="RR_thigh_link" />
+    <origin xyz="-0.00109999997841868 -0.056129999999867002 -0.024930000000752899" rpy="0 -0 0" />
+    <axis xyz="1 0 0" />
+    <limit effort="0.69999999999999996" velocity="42" lower="-1.6000000000000001" upper="2.3999999999999999" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="RR_J2_joint" type="revolute">
+    <parent link="RR_thigh_link" />
+    <child link="RR_calf_link" />
+    <origin xyz="0.00119999999410667 -0.050000000000145102 0" rpy="0 -0 0" />
+    <axis xyz="1 0 0" />
+    <limit effort="0.69999999999999996" velocity="42" lower="-1.8" upper="2.3999999999999999" />
+    <dynamics damping="0" friction="0" />
+  </joint>
+  <joint name="RR_foot_tip_joint" type="fixed">
+    <parent link="RR_calf_link" />
+    <child link="RR_foot_tip_link" />
+    <origin xyz="-0.00078909364975357499 -0.12091740323207301 0.0062403646132292" rpy="0 -0 0" />
+  </joint>
+</robot>

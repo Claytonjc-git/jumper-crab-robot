@@ -1,0 +1,75 @@
+{
+  "schema": "kk-scene-package/1",
+  "id": "beach",
+  "description": "low warm sun over damp sand, dusk sky, long shadows",
+  "tags": [
+    "presentation",
+    "outdoor"
+  ],
+  "use": "watching",
+  "exportedBy": {
+    "repo": "KingKongRobotics/jumper",
+    "commit": "178d27e7006626773916e7585bda5202ba9df86f",
+    "tool": "scenes/tools/export_web_scene.py",
+    "mujocoAtLeast": "3.2"
+  },
+  "world": {
+    "file": "scene.xml",
+    "terrainType": "plane",
+    "ground": {
+      "geom": "terrain",
+      "friction": [
+        1.0,
+        0.005,
+        0.0001
+      ],
+      "priority": 0,
+      "outranksFeet": false,
+      "solref": [
+        0.02,
+        1.0
+      ],
+      "condim": 3
+    },
+    "counts": {
+      "geoms": 1,
+      "lights": 1,
+      "textures": 2,
+      "materials": 1
+    },
+    "decorativeGeoms": [],
+    "collidingGeoms": []
+  },
+  "props": [],
+  "rules": {},
+  "files": {
+    "assets\\sky_back.png": {
+      "bytes": 44351,
+      "sha256": "faa3668521ed7af61524365f1498d159fe851aa25ed27d0877c8b29953042015"
+    },
+    "assets\\sky_down.png": {
+      "bytes": 37728,
+      "sha256": "f5074b5342f13a94e1bfee20f6eb60b2bf0c668462ac608c571f8268724b59e4"
+    },
+    "assets\\sky_front.png": {
+      "bytes": 75789,
+      "sha256": "eb312fbac4999e8bd21ed46c2604e0b63537995474e42ac9621cdf2c3925983f"
+    },
+    "assets\\sky_left.png": {
+      "bytes": 84840,
+      "sha256": "1f15e0a7d48e8bc2050ab93c82479a313f26cdb3fe4d90203e8beecf840b601e"
+    },
+    "assets\\sky_right.png": {
+      "bytes": 39552,
+      "sha256": "fe4177aea17b3553085c632f6025e3b438b60269a47b1bc96acf62fed541022c"
+    },
+    "assets\\sky_up.png": {
+      "bytes": 37002,
+      "sha256": "9915f4452bcc38aa7f4374e5cfa3150c99cd4652eaf438871ef9227fb91866e3"
+    },
+    "scene.xml": {
+      "bytes": 1036,
+      "sha256": "84b0d933cdeded082c58a0e16112d21570bb0807d8d4e0af099ff5daece7c255"
+    }
+  }
+}

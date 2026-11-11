@@ -1,0 +1,4 @@
+Tool: built-in image_gen (edit mode)
+Source: C:/Users/clayt/Downloads/jumper-thumbnail-original.png
+
+Use case: text-localization. Edit target: the supplied portrait Jumper robot thumbnail. Change only the text in the dark charcoal header to exactly "Jumper Frontflip", displayed as two bold condensed uppercase lines: "JUMPER" in cream above "FRONTFLIP" in orange, using the same typographic style as the original. Remove the old words "ROBOT CRAB LEARNS TO FLIP" entirely. Fit the new title cleanly within the existing dark header with generous margins, retaining the small orange accent line if it fits. Preserve the original portrait aspect ratio, charcoal and cream diagonal division, all three small robot renders, the large red crab in mid-flip, its translucent motion trail, orange circle, curved arrow, colors, and every element below the header unchanged. Do not redraw or alter any robot geometry. No other text, no watermark.

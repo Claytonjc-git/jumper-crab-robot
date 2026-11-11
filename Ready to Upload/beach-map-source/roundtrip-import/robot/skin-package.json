@@ -1,0 +1,248 @@
+{
+  "author": "KingKongRobotics",
+  "collision_policy": "baseline_preserved",
+  "files": {
+    "assembled/jumper/README.md": {
+      "bytes": 12086,
+      "sha256": "0d881ed2898a23a9ec537ac19ff50f78062da90dc964d35d05869b983f63fc10"
+    },
+    "assembled/jumper/meshes/visual/LF_finger_grip_insert_link.stl": {
+      "bytes": 115284,
+      "sha256": "cf5faec0faa0693b191d89ef58c427e562e983dcb47a6c3eed2f135e0d500c18"
+    },
+    "assembled/jumper/meshes/visual/LF_finger_link.stl": {
+      "bytes": 408184,
+      "sha256": "29f8b316d6d3df884bda9a1e19b8f7a6ffc2dcada28c3f52bd560710ea4473b9"
+    },
+    "assembled/jumper/meshes/visual/LF_finger_tip_link.stl": {
+      "bytes": 706784,
+      "sha256": "a557c0a840392724c0f544d19299ca6e55651f75143d7d9fce79afe11ae07da8"
+    },
+    "assembled/jumper/meshes/visual/LF_forearm_link.stl": {
+      "bytes": 450584,
+      "sha256": "e7b2d8f16bb5efa514c8170e15f093ec0dbca345672534386f0b77b7ff455e4e"
+    },
+    "assembled/jumper/meshes/visual/LF_palm_grip_insert_link.stl": {
+      "bytes": 128384,
+      "sha256": "db76fb24837159e3b141420ea5b5b1f2dc8ba2e366a6edeb44f344c0e060795a"
+    },
+    "assembled/jumper/meshes/visual/LF_palm_link.stl": {
+      "bytes": 754084,
+      "sha256": "0a69f36298ed1f64b782668b6d0266ccc4b4299593f0071e76333e6577efc177"
+    },
+    "assembled/jumper/meshes/visual/LF_palm_pad_b_link.stl": {
+      "bytes": 287384,
+      "sha256": "3acff9d1d21951868df1e0b170c88153e9605861bc3193eb82d8516607abb20e"
+    },
+    "assembled/jumper/meshes/visual/LF_palm_pad_f_link.stl": {
+      "bytes": 296784,
+      "sha256": "bd1f4af5c9d4b0a67836a423027d3bd83a913ce9cefe4ee6b276f7ee99c4520f"
+    },
+    "assembled/jumper/meshes/visual/LF_shoulder_link.stl": {
+      "bytes": 753784,
+      "sha256": "2565d7fd191af7356479053ce6ba0b1aa4d6c12a1f10ecef13b82690644c9cb2"
+    },
+    "assembled/jumper/meshes/visual/LF_upper_arm_link.stl": {
+      "bytes": 605584,
+      "sha256": "f8a5eee25c2e251f7b00e8667150cd01e92bcdd2e31287b2022a972199490abc"
+    },
+    "assembled/jumper/meshes/visual/LM_calf_link.stl": {
+      "bytes": 717984,
+      "sha256": "42883897518fd83e09892b3215a8a8564a5bff9cc48602316a1d282d77fbc28d"
+    },
+    "assembled/jumper/meshes/visual/LM_foot_tip_link.stl": {
+      "bytes": 96784,
+      "sha256": "364dcfdbf94243f914272f024e6cd1cad95799ab427b38e0235bdadfd10193fc"
+    },
+    "assembled/jumper/meshes/visual/LM_hip_link.stl": {
+      "bytes": 658484,
+      "sha256": "a8f14193f1ffa7c177dbecb349b00a461393de7d444d9bd3771b1370fc14298e"
+    },
+    "assembled/jumper/meshes/visual/LM_thigh_link.stl": {
+      "bytes": 450584,
+      "sha256": "4724f8aa3248794f7e783a94dc3379dbf04a21dcef2f8c956c29f16652b5b012"
+    },
+    "assembled/jumper/meshes/visual/LR_calf_link.stl": {
+      "bytes": 717984,
+      "sha256": "65345119ca4fe8fffea9d0eaf13f1b01509b805eaeb4d17957ecebf82a0e066f"
+    },
+    "assembled/jumper/meshes/visual/LR_foot_tip_link.stl": {
+      "bytes": 96784,
+      "sha256": "a9f78dcf40dfa524087764fb2d7604b3411128426dc64bc412ada199c36294a9"
+    },
+    "assembled/jumper/meshes/visual/LR_hip_link.stl": {
+      "bytes": 658484,
+      "sha256": "341240e34b243160b564471f1510b993b7247f87acbcb284b65135cd3e37e3c4"
+    },
+    "assembled/jumper/meshes/visual/LR_thigh_link.stl": {
+      "bytes": 450584,
+      "sha256": "7b08f377b6712838b90c2225afb2c719111452223554bb08fb503058675db6a0"
+    },
+    "assembled/jumper/meshes/visual/RF_finger_grip_insert_link.stl": {
+      "bytes": 115284,
+      "sha256": "bbaff916342d374f7f78c1f03ca71e8dc235174b5d4651e7e2df4e6dc2ca01da"
+    },
+    "assembled/jumper/meshes/visual/RF_finger_link.stl": {
+      "bytes": 408184,
+      "sha256": "618b0e23e3f3e7bc8c4d2425692d2580308f721c3062b6479d349defafd26ec4"
+    },
+    "assembled/jumper/meshes/visual/RF_finger_tip_link.stl": {
+      "bytes": 706784,
+      "sha256": "16ab474a946915080faa128e6c2f98766e262f3ca8baccd91330e33ef5e2350a"
+    },
+    "assembled/jumper/meshes/visual/RF_forearm_link.stl": {
+      "bytes": 450584,
+      "sha256": "af869fb7e3e1a9a4e41acd7187598aac8101276d40ce4e9c9c3da427022d6096"
+    },
+    "assembled/jumper/meshes/visual/RF_palm_grip_insert_link.stl": {
+      "bytes": 128384,
+      "sha256": "f3299e00de883e90b8a2f69fd70f1aa291edc9c87f33c051a50d3f4a3040c4d8"
+    },
+    "assembled/jumper/meshes/visual/RF_palm_link.stl": {
+      "bytes": 754084,
+      "sha256": "9d74629431797a8472c24e36c8b79e629c28190b490b6a79e28743183d92f33e"
+    },
+    "assembled/jumper/meshes/visual/RF_palm_pad_b_link.stl": {
+      "bytes": 296784,
+      "sha256": "793bc432bc333286093f1a5ba5e69b806c4d129a24829757e3b0c7c1ff48bbef"
+    },
+    "assembled/jumper/meshes/visual/RF_palm_pad_f_link.stl": {
+      "bytes": 287384,
+      "sha256": "1f777ecee4bcde201aa7614c44af7ad026400819c4735687934c6122ccafebec"
+    },
+    "assembled/jumper/meshes/visual/RF_shoulder_link.stl": {
+      "bytes": 753784,
+      "sha256": "f0a00584b81b67ea041220a80fa46d56a5f0af93f509fdb941dde89f707a36d5"
+    },
+    "assembled/jumper/meshes/visual/RF_upper_arm_link.stl": {
+      "bytes": 605584,
+      "sha256": "3e40d4a4e96d7cca0fa5540d1a08dfb6ef53f0b0302d0adce72e440429c0a5ce"
+    },
+    "assembled/jumper/meshes/visual/RM_calf_link.stl": {
+      "bytes": 669384,
+      "sha256": "18972e56b4f0fd023907bde4e08ecd37b8c7d0b46d906eaf9b34b4caa3dd7f78"
+    },
+    "assembled/jumper/meshes/visual/RM_foot_tip_link.stl": {
+      "bytes": 96784,
+      "sha256": "d0e1306ebf0c47412d86dcce89923d3b7a41defecf8bc956bf67634a6202440b"
+    },
+    "assembled/jumper/meshes/visual/RM_hip_link.stl": {
+      "bytes": 658484,
+      "sha256": "f0c70f361ecdca1835a9c94b42389ffbf25f0475daded643dac65e61609bfb39"
+    },
+    "assembled/jumper/meshes/visual/RM_thigh_link.stl": {
+      "bytes": 450584,
+      "sha256": "e441e75bf98ac85066f56aafc89ec440f04cea6d647cfdab56b2c2e416e545d3"
+    },
+    "assembled/jumper/meshes/visual/RR_calf_link.stl": {
+      "bytes": 717984,
+      "sha256": "61a2343865b7bc2982c876b0c682b608c083a6d543b1c33c8c16e08600e8060c"
+    },
+    "assembled/jumper/meshes/visual/RR_foot_tip_link.stl": {
+      "bytes": 96784,
+      "sha256": "dfd85194297519dc276d98647e34f1ed88fca2dd06e6d639ce4753cd839d868d"
+    },
+    "assembled/jumper/meshes/visual/RR_hip_link.stl": {
+      "bytes": 658484,
+      "sha256": "15cb10d1ef80ecbd9ab5515cd2b4ccf67fb9e350fa938cc31dedb3881c95b803"
+    },
+    "assembled/jumper/meshes/visual/RR_thigh_link.stl": {
+      "bytes": 450584,
+      "sha256": "fee24f277a740042a758754c3e81efb805045984698aadd4a3baed557f9cb083"
+    },
+    "assembled/jumper/meshes/visual/base_link.stl": {
+      "bytes": 3801984,
+      "sha256": "0c1bd088c12db6ace677238800f81bd270a04270891dee934a3ed8b46dfcd68f"
+    },
+    "assembled/jumper/meshes/visual/camera_link.stl": {
+      "bytes": 32484,
+      "sha256": "02fb606f9630c1c2d6e33ebc99ab27be12bd88664805845f5b72bbb1355f20ae"
+    },
+    "assembled/jumper/meshes/visual/display_module_link.stl": {
+      "bytes": 42534,
+      "sha256": "c019dd2abf703c94dc2dbf693acce85e8b62ee9ada1af21a0786afd00bd94b2e"
+    },
+    "assembled/jumper/meshes/visual/tof_sensor_link.stl": {
+      "bytes": 104484,
+      "sha256": "4813e253c3b471319254a330f06715473f388f3b91dc7fb8da097cec9724aafd"
+    },
+    "assembled/jumper/meshes/visual/upper_shell_0.stl": {
+      "bytes": 907284,
+      "sha256": "25cadf3b3a05f56de945468858315a867f4d3c9b5967911c9e395d81f3176fc9"
+    },
+    "assembled/jumper/meshes/visual/upper_shell_link.stl": {
+      "bytes": 907284,
+      "sha256": "25cadf3b3a05f56de945468858315a867f4d3c9b5967911c9e395d81f3176fc9"
+    },
+    "assembled/jumper/preview-pose.json": {
+      "bytes": 1408,
+      "sha256": "a9c0455c626a4ef56e5ced0092d5837c999323712577e4719f9559df88fa5448"
+    },
+    "assembled/jumper/robot.urdf": {
+      "bytes": 62787,
+      "sha256": "03a7d581b7d7f0c86cd2775cd9e8be2e76fad33408bab620d2b524aa0c392d7d"
+    },
+    "assembled/jumper/robot.xml": {
+      "bytes": 37394,
+      "sha256": "66367430bc9e20cc4ba9ea455ccc9009ff3994203f5f8bfb91969e155901d20d"
+    },
+    "assembled/jumper/scene.xml": {
+      "bytes": 713,
+      "sha256": "46080b5e341213d3e3e2373e06f8d8390ef2a86aa8b4cb5f6a580845cc1819f5"
+    },
+    "assembled/jumper/simulation-report.json": {
+      "bytes": 33600,
+      "sha256": "30a25007a6ea9d6663d28278326e53f4d775f7beb846fca4eef43654ce66e4a7"
+    },
+    "preview/preview.png": {
+      "bytes": 74090,
+      "sha256": "ba5772978649242c51c19144cbee25527bc62d81f41b17ebff01fa2955e9978e"
+    },
+    "provenance/baseline.xml": {
+      "bytes": 37059,
+      "sha256": "36c0015b880926ea808e22181178e2fc21ab6da5b56ea6ec22896757d3492fe1"
+    },
+    "provenance/profile.json": {
+      "bytes": 19246,
+      "sha256": "051e5c98ae4d948604bf095667f7eeb329a21b43885cc912c5f4dcbbeb83aef9"
+    }
+  },
+  "id": "jumper-original",
+  "inertia_policy": "baseline_preserved",
+  "license_id": "Apache-2.0",
+  "physical_dynamics_validated": false,
+  "physical_fit_tested": false,
+  "platform": {
+    "baseline_sha256": "36c0015b880926ea808e22181178e2fc21ab6da5b56ea6ec22896757d3492fe1",
+    "cad_unit": "millimeter",
+    "frame": "original-robot-v1 CAD Z-up",
+    "id": "jumper",
+    "mechanical_interface_sha256": "40bcd073e930ee1b3070219b27f2d93c5277259a0eafad45b839ec09f83b8831",
+    "mechanical_platform": "original-robot-v1",
+    "parent_link": "upper_shell_link",
+    "profile_sha256": "051e5c98ae4d948604bf095667f7eeb329a21b43885cc912c5f4dcbbeb83aef9",
+    "simulation_unit": "meter",
+    "visual_replacement": {
+      "geom_name": "upper_shell_link_visual",
+      "mode": "dedicated_link"
+    }
+  },
+  "schema": "kk-skin-package/3",
+  "source": {
+    "omitted_source_files": [
+      "preview.py"
+    ],
+    "producer_code_sha256": {
+      "ams_colors.py": "887037906ba8dd052bd45da27d3b798ae2b5fe7b158d22b012045959d9ac91ba",
+      "build_original_skin.py": "236330db5e1e4dc3e921aeb4f48d7947dc404203d0036f377671da7a429c96f3",
+      "preview_simulation.py": "06ed15e5899fc711c0661c2cb392c70caa12ed2370236b804145d70a06018662",
+      "simulation.py": "9072b10e45a5d8e0e6602e26722e9006cf796a38afb5ec40c101cbded17eee4c",
+      "urdf.py": "f2fff6589769b38bc38c6e0b61be9c556f2f21c474fc61089f771854528afe00"
+    },
+    "report_sha256": "30a25007a6ea9d6663d28278326e53f4d775f7beb846fca4eef43654ce66e4a7",
+    "shell_sha256": "ffffc7fabd3582752c2395fb801d63943dc47aa18cc1681a4a9c450634223987"
+  },
+  "title": "Jumper Original",
+  "version": "1.0.1",
+  "visual_overrides": []
+}
