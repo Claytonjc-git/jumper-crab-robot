@@ -315,6 +315,11 @@ def _reference(env_cfg, out: Path, wire_joint_order: list[str]) -> dict:
     if "root_quat" in ref:
         # Not per-joint: one orientation per frame, `(w, x, y, z)`.
         tables["root_quat"] = rows(ref["root_quat"])
+    if "forward_rotation" in ref:
+        # One turn per frame, rad: what the clock feedback holds the robot's turn against.
+        tables["forward_rotation"] = [round(float(v), places) for v in ref["forward_rotation"]]
+    if cmd.get("clock_feedback") is not None and "forward_rotation" not in tables:
+        raise SystemExit("[export] the clock feedback needs the reference's forward_rotation")
 
     path = out / (cmd["name"] + TRAJECTORY_SUFFIX)
     path.write_text(
@@ -332,7 +337,7 @@ def _reference(env_cfg, out: Path, wire_joint_order: list[str]) -> dict:
 
     carried = ["residual_action", "rec_hz", "duration", "lookahead_s"]
     optional = ["starts_on_entry", "control_hz", "t_go", "go_frame", "span",
-                "baseline", "baseline_lead_s", "go_event", "n_cmd"]
+                "baseline", "baseline_lead_s", "go_event", "n_cmd", "clock_feedback"]
     block = {k: cmd[k] for k in carried}
     block.update({k: cmd[k] for k in optional if cmd.get(k) is not None})
     block["file"] = path.name
@@ -340,7 +345,7 @@ def _reference(env_cfg, out: Path, wire_joint_order: list[str]) -> dict:
     if "q_cmd" in tables:
         block["n_cmd"] = len(tables["q_cmd"])
 
-    shapes = "  ".join(f"{k} {len(v)}x{len(v[0])}"
+    shapes = "  ".join(f"{k} {len(v)}" + (f"x{len(v[0])}" if isinstance(v[0], list) else "")
                        for k, v in tables.items() if k != "joint_order")
     kind = "residual on " + str(block.get("baseline")) if block["residual_action"] else "played"
     print(f"[export] reference  {cmd['name']}: {shapes}  ({kind}, "

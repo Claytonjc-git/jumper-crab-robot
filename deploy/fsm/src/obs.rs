@@ -355,6 +355,17 @@ pub fn projected_gravity(q: [f32; 4]) -> [f32; 3] {
     ]
 }
 
+/// `v` rotated by the unit quaternion `q` `(w, x, y, z)`: body frame to world.
+fn rotate(q: [f64; 4], v: [f64; 3]) -> [f64; 3] {
+    let (w, u) = (q[0], [q[1], q[2], q[3]]);
+    let cross = |a: [f64; 3], b: [f64; 3]| {
+        [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]
+    };
+    let t = cross(u, v).map(|c| 2.0 * c);
+    let ut = cross(u, t);
+    [v[0] + w * t[0] + ut[0], v[1] + w * t[1] + ut[1], v[2] + w * t[2] + ut[2]]
+}
+
 pub struct ObservationBuilder {
     cfg: ObsConfig,
     default_wire: Vec<f32>,
@@ -402,6 +413,13 @@ pub struct ObservationBuilder {
     /// decoder reads back. Kept here so a tick allocates nothing.
     ref_row: Vec<f32>,
     baseline: Vec<f32>,
+    /// Clock feedback: the forward turn integrated from the gyro, rad, about the
+    /// heading's lateral axis at `go` (`None` until the first tick); the hold the
+    /// window start set; ticks the clock has been moved so far.
+    turn: f64,
+    turn_axis: Option<[f64; 2]>,
+    clock_target: Option<i64>,
+    clock_shift: i64,
 }
 
 impl ObservationBuilder {
@@ -494,6 +512,10 @@ impl ObservationBuilder {
             on_entry,
             reference,
             cfg,
+            turn: 0.0,
+            turn_axis: None,
+            clock_target: None,
+            clock_shift: 0,
         })
     }
 
@@ -537,6 +559,47 @@ impl ObservationBuilder {
     /// from the top is what the training env does on its own `go`.
     pub fn trigger_go(&mut self) {
         self.ref_step = Some(0);
+        self.reset_clock_feedback();
+    }
+
+    fn reset_clock_feedback(&mut self) {
+        self.turn = 0.0;
+        self.turn_axis = None;
+        self.clock_target = None;
+        self.clock_shift = 0;
+    }
+
+    /// `FrontflipCommand._clock_feedback`, transcribed: hold the clock while the
+    /// turn lags the recording's, so the un-tuck waits for the turn, and advance
+    /// it while the turn leads. The turn is the world-frame gyro about the
+    /// heading's lateral axis, which is the sim's accumulated world-Y turn for a
+    /// robot that starts facing +x.
+    fn clock_feedback(&mut self, state: &RobotState) {
+        let Some(r) = self.reference.clone() else { return };
+        let Some(fb) = r.clock_feedback() else { return };
+        let Some(n) = self.ref_step else { return };
+        let q = state.imu.quat.map(f64::from);
+        match self.turn_axis {
+            None => {
+                let (w, x, y, z) = (q[0], q[1], q[2], q[3]);
+                let yaw = (2.0 * (w * z + x * y)).atan2(1.0 - 2.0 * (y * y + z * z));
+                self.turn_axis = Some([-yaw.sin(), yaw.cos()]);
+                self.turn = f64::from(r.forward_rotation_at(self.t_since_go()));
+            }
+            Some([ax, ay]) => {
+                let omega = rotate(q, state.imu.gyro.map(f64::from));
+                self.turn += (omega[0] * ax + omega[1] * ay) * self.cfg.control_dt;
+            }
+        }
+        let tsg = self.t_since_go();
+        let lag = f64::from(r.forward_rotation_at(tsg)) - self.turn;
+        let t_ref = tsg + r.spec().t_go;
+        if t_ref >= fb.start_s && self.clock_target.is_none() {
+            self.clock_target = Some(((fb.gain * lag).round() as i64).clamp(0, fb.max_hold));
+        }
+        let hold = self.clock_target.is_some_and(|t| self.clock_shift < t);
+        self.ref_step = Some(n - i64::from(hold));
+        self.clock_shift += i64::from(hold);
     }
 
     /// Whether the recording this mode plays has run out.
@@ -579,6 +642,7 @@ impl ObservationBuilder {
         self.cadence_phase = 0.0;
         self.ref_step = if self.go_by_event { None } else { Some(0) };
         self.prev_cmd.iter_mut().for_each(|v| *v = 0.0);
+        self.reset_clock_feedback();
     }
 
     fn command_channel(&self, name: &str, c: &Command) -> Result<f32, Error> {
@@ -810,6 +874,8 @@ impl ObservationBuilder {
                 self.cadence_phase = k.advanced(self.cadence_phase, command, dt);
             }
         }
+        // Before the frame: the sim moves its clock before the observation samples it.
+        self.clock_feedback(state);
         self.build_frame(state, command, last_action, last_torque)?;
         if let Some(k) = self.cfg.cadence.filter(|k| k.advance == Advance::AfterFrame) {
             // After the frame, by the command this frame showed: the next one is
@@ -1168,6 +1234,63 @@ mod tests {
         b.build(&s, &Command::default(), &[], &[]).unwrap();
         // tick 1 advances one control step, not one recording frame.
         assert_eq!(b.reference_baseline(), Some(&[107.0][..]));
+    }
+
+    /// `with_reference`'s recording turning 0.1 rad a frame, with the clock feedback
+    /// over recording time 0.2-0.3 s (t_since_go 0.1-0.2): 10 ticks/rad, hold 3, skip 2.
+    fn with_clock_feedback() -> Contract {
+        let text = r#"{"obs_joint_order": ["a"], "action_joint_order": ["a"], "action_scale": 0.25,
+            "default_joint_pos": {"a": 0.5},
+            "control": {"kp": 10.0, "kd": 0.5, "effort_limit": 2.0, "control_hz": 50.0},
+            "observation": {"dim": 1, "history_length": 1,
+                            "terms": [{"name": "jump_phase", "dim": 1}]},
+            "action": {"dim": 1},
+            "reference": {"file": "t.json", "residual_action": true, "rec_hz": 100.0,
+                          "control_hz": 50.0, "t_go": 0.1, "go_frame": 10,
+                          "duration": 0.3, "span": 0.2, "lookahead_s": [0.01],
+                          "baseline": "q_cmd", "baseline_lead_s": 0.02,
+                          "n_frames": 30, "n_cmd": 15,
+                          "clock_feedback": {"gain": 10.0, "start_s": 0.2,
+                                             "max_hold": 3}}}"#;
+        let mut v: serde_json::Value =
+            serde_json::from_str(&table_for(&["a".to_string()])).unwrap();
+        v["forward_rotation"] = serde_json::json!((0..30).map(|f| 0.1 * f as f32).collect::<Vec<_>>());
+        let mut c = Contract::from_str(text, &["a".to_string()]).unwrap();
+        c.attach_reference(&v.to_string(), &["a".to_string()]).unwrap();
+        c
+    }
+
+    /// `jump_phase` over `ticks` builds, with the body turning at `gyro` rad/s.
+    fn phases(c: &Contract, gyro: [f32; 3], ticks: usize) -> Vec<f32> {
+        let mut cf = cfg(&["jump_phase"], &[1]);
+        cf.reference_go_delay_s = 0.0;
+        let mut b = ObservationBuilder::new(cf, c, 1).unwrap();
+        let mut s = state();
+        s.imu.gyro = gyro;
+        (0..ticks)
+            .map(|_| (b.build(&s, &Command::default(), &[], &[]).unwrap()[0] * 10.0).round() / 10.0)
+            .collect()
+    }
+
+    #[test]
+    fn the_clock_holds_while_the_turn_lags_the_recording() {
+        // The robot does not turn and the recording does: at the window start the lag
+        // is 1 rad, 10 ticks capped at 3, so the phase stands for three more ticks.
+        let held = phases(&with_clock_feedback(), [0.0; 3], 10);
+        assert_eq!(held, [0.0, 0.1, 0.2, 0.3, 0.4, 0.4, 0.4, 0.4, 0.5, 0.6]);
+        // Control: the same recording without the feedback runs straight on.
+        let free = phases(&with_reference("jump_phase", 1, "[0.01]", 1), [0.0; 3], 10);
+        assert_eq!(free, [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]);
+    }
+
+    #[test]
+    fn a_turn_that_leads_runs_the_clock_freely() {
+        // 50 rad/s about the lateral axis leads the recording's 10 rad/s: no hold.
+        let led = phases(&with_clock_feedback(), [0.0, 50.0, 0.0], 8);
+        assert_eq!(led, [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]);
+        // Control: the same spin about the roll axis is no forward turn, so it lags.
+        let rolled = phases(&with_clock_feedback(), [50.0, 0.0, 0.0], 8);
+        assert_eq!(rolled, [0.0, 0.1, 0.2, 0.3, 0.4, 0.4, 0.4, 0.4], "a roll is a lagging flip");
     }
 
     /// The dance's shape: a mode that **observes** a recording without riding

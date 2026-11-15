@@ -105,6 +105,21 @@ pub struct ReferenceSpec {
     /// Rows in `q_cmd`. Zero where there is no residual baseline.
     #[serde(default)]
     pub n_cmd: usize,
+    /// Moves the clock by the measured turn, as the training command did. `None` runs it freely.
+    #[serde(default)]
+    pub clock_feedback: Option<ClockFeedback>,
+}
+
+/// `FrontflipCommandCfg.clock_feedback_*`, from the export.
+///
+/// At `start_s` the turn lag sets a hold of `gain * lag` ticks, at most `max_hold`.
+#[derive(Debug, Clone, Deserialize)]
+pub struct ClockFeedback {
+    /// Held ticks per rad of lag.
+    pub gain: f64,
+    /// Recording time, s, from the recording's first frame.
+    pub start_s: f64,
+    pub max_hold: i64,
 }
 
 /// The companion file `scripts/export.py` writes beside the contract.
@@ -128,6 +143,9 @@ struct Table {
     /// that observes how far its base has tilted from the recording's.
     #[serde(default)]
     root_quat: Vec<[f32; 4]>,
+    /// The recorded forward turn, rad, per frame. Read by the clock feedback.
+    #[serde(default)]
+    forward_rotation: Vec<f32>,
 }
 
 /// A parsed recording, in wire order, with the spec that says how to read it.
@@ -143,6 +161,8 @@ pub struct Trajectory {
     qd: Vec<f32>,
     /// The anchor body's orientation per frame, empty where it carries none.
     root_quat: Vec<[f32; 4]>,
+    /// The recorded forward turn per frame, empty where it carries none.
+    forward_rotation: Vec<f32>,
     n_frames: usize,
     n_cmd: usize,
 }
@@ -224,6 +244,21 @@ impl Trajectory {
                 t.q.len()
             ));
         }
+        if !t.forward_rotation.is_empty() && t.forward_rotation.len() != t.q.len() {
+            return bad(format!(
+                "forward_rotation has {} rows and q has {}",
+                t.forward_rotation.len(),
+                t.q.len()
+            ));
+        }
+        if let Some(fb) = &spec.clock_feedback {
+            if t.forward_rotation.is_empty() {
+                return bad("the clock feedback reads `forward_rotation`, and there is none".into());
+            }
+            if !(fb.gain > 0.0 && fb.max_hold >= 0) {
+                return bad(format!("clock_feedback is not a usable setting: {fb:?}"));
+            }
+        }
         if spec.residual_action && t.q_cmd.is_empty() {
             return bad("the action is a residual on `q_cmd`, and there is no q_cmd".into());
         }
@@ -247,6 +282,7 @@ impl Trajectory {
             q_cmd: t.q_cmd.into_iter().flatten().collect(),
             qd: t.qd.into_iter().flatten().collect(),
             root_quat: t.root_quat,
+            forward_rotation: t.forward_rotation,
             n_frames,
             n_cmd,
         })
@@ -305,6 +341,22 @@ impl Trajectory {
     /// The recorded state at `t_since_go`, wire order, into `out`.
     pub fn q_at_into(&self, t_since_go: f64, out: &mut [f32]) {
         lerp_row(&self.q, self.joints, self.n_frames, self.index_of(t_since_go), out);
+    }
+
+    /// The clock feedback setting, when the policy trained with one.
+    pub fn clock_feedback(&self) -> Option<&ClockFeedback> {
+        self.spec.clock_feedback.as_ref()
+    }
+
+    /// The recorded forward turn at `t_since_go`, rad, interpolated as `q` is.
+    /// Zero for a recording that carries none.
+    pub fn forward_rotation_at(&self, t_since_go: f64) -> f32 {
+        if self.forward_rotation.is_empty() {
+            return 0.0;
+        }
+        let mut out = [0.0f32];
+        lerp_row(&self.forward_rotation, 1, self.n_frames, self.index_of(t_since_go), &mut out);
+        out[0]
     }
 
     /// The residual's baseline at `t_since_go`, wire order, into `out`.
@@ -424,6 +476,7 @@ mod tests {
             go_event: None,
             n_frames: 30,
             n_cmd: 15,
+            clock_feedback: None,
         }
     }
 
@@ -497,6 +550,24 @@ mod tests {
         assert_eq!(out[0], 29.0, "last q frame, not frame 0");
         t.baseline_into(600.0, &mut out);
         assert_eq!(out[0], 114.0, "last q_cmd frame");
+    }
+
+    #[test]
+    fn clock_feedback_without_its_table_is_refused() {
+        // Reading zeros instead is a recording that never turns, so the clock never holds.
+        let mut s = spec();
+        s.clock_feedback =
+            Some(ClockFeedback { gain: 50.0, start_s: 0.2, max_hold: 10 });
+        let e = Trajectory::parse(s.clone(), &table(), &wire()).unwrap_err();
+        assert!(e.contains("forward_rotation"), "{e}");
+
+        let rot: Vec<f32> = (0..30).map(|f| f as f32 * 0.1).collect();
+        let mut v: serde_json::Value = serde_json::from_str(&table()).unwrap();
+        v["forward_rotation"] = serde_json::json!(rot);
+        let t = Trajectory::parse(s, &v.to_string(), &wire()).unwrap();
+        // Control: frame 15 at t_since_go 0.05, interpolated like q.
+        assert!((t.forward_rotation_at(0.05) - 1.5).abs() < 1e-6);
+        assert!((t.forward_rotation_at(0.055) - 1.55).abs() < 1e-5);
     }
 
     #[test]

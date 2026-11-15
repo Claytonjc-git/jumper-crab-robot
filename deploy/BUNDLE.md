@@ -569,6 +569,7 @@ observes one.
 | `q_cmd` | `n_cmd × joints` | what the recorded controller commanded, at `control_hz`: the residual's baseline. Required when `residual_action` |
 | `qd` | `n_frames × joints` | the recorded joint velocities. Required by `ref_joint_vel` |
 | `root_quat` | `n_frames × 4` | the anchor body's orientation, `(w, x, y, z)`. Required by `ref_tilt_error` |
+| `forward_rotation` | `n_frames` | the recorded forward turn, rad. Required by `clock_feedback` |
 | `_source`, `_note` | | for a person |
 
 Values are rounded to five decimals. `q` and `q_cmd` are different tables at different
@@ -593,6 +594,7 @@ The contract's `reference` block says how to read it:
 | `span` | no | what `jump_phase` runs 0 → 1 across, s |
 | `starts_on_entry` | no | the recording starts when the mode is entered — the dance, and the jump since 2026-09-26 |
 | `go_event` | no | the name of the `event = true` button that starts it — a motion a person times inside its mode |
+| `clock_feedback` | no | `{gain, start_s, max_hold}`: at `start_s`, recording time, the clock holds `gain` × lag ticks, at most `max_hold`; a lead does not move it. The turn is the gyro integrated about the heading's lateral axis at `go` |
 
 `starts_on_entry` and `go_event` may not both be set. With neither, the motion starts on a
 timer, `reference_go_delay_s` — 2 s unless the host says otherwise — after the mode is
@@ -601,8 +603,9 @@ its mode: the controller reports it, the host releases the latch, and the cascad
 `always` rule takes the robot back.
 
 Refused when the table is attached: a table in another joint order; row counts that
-disagree with the block; a row of the wrong width; `qd` or `root_quat` not as long as `q`;
-a residual with no `q_cmd`, no `control_hz`, or a `baseline` other than `q_cmd`; `rec_hz`,
+disagree with the block; a row of the wrong width; `qd`, `root_quat` or `forward_rotation` not
+as long as `q`; a `clock_feedback` with no `forward_rotation`, a gain that is not positive or a
+negative `max_hold`; a residual with no `q_cmd`, no `control_hz`, or a `baseline` other than `q_cmd`; `rec_hz`,
 `duration` or `span` not positive; both `starts_on_entry` and `go_event`; and, when the
 mode is built, a term that needs `qd` or `root_quat` from a table without it.
 

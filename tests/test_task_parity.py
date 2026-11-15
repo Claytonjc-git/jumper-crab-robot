@@ -80,6 +80,8 @@ NOT_LOCOMOTION = {
     # Imitates a single recorded jump: one-shot, no command, no gait prior, and
     # its reward budget is reference tracking. Same reasoning as jumper.dance.
     "jumper.jump",
+    # One-shot 200 Hz frontflip tracking a qualified physics reference, not a gait.
+    "jumper.frontflip",
     # The same jump with the recording only as a fading training-time prior:
     # one-shot, no command, no gait prior, and a reward budget of height, not of
     # velocity tracking.
